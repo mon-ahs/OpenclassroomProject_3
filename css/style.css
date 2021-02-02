@@ -1,0 +1,121 @@
+body {
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  color: #222;
+}
+
+h1 {
+  font-weight: 300;
+  margin: 10%;
+  text-align: left;
+}
+
+h2 {
+  font-weight: 300;
+  margin: 10%;
+  text-align: left;
+}
+
+.title-page {
+  font-weight: 300;
+  margin: 10%;
+  text-align: left;
+  font-size: 2rem;
+}
+
+button {
+  font-size: 1.3rem;
+  border-radius: 4px;
+  background-color: #B4cde1ff;
+}
+
+.img-user {
+  width: 10%;
+}
+
+.list-presentation {
+  text-align: left;
+  font-size: 1.2rem;
+  margin-left: 15%;
+}
+
+.list-presentation-contenu {
+  text-align: left;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.img-clavier {
+  width: 80%;
+}
+
+.list-acteurs {
+  text-align: left;
+  font-size: 1.2rem;
+  margin-left: 15%;
+}
+
+.logo-acteurs {
+  width: 60%;
+}
+
+.style-acteurs {
+  margin: 1%;
+  font-size: 1.2rem;
+  font-weight: 100;
+  text-align: justify;
+  border: 1px solid #B4cde1ff;
+  padding: 7px;
+}
+
+.lien-acteurs {
+  color: red;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.contenu-textuel {
+  font-weight: 300;
+  font-size: 1.5rem;
+  margin: 10%;
+  text-align: justify;
+}
+
+.content-comments {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5%;
+  margin-left: 15%;
+  font-size: 1.3rem;
+}
+
+.content-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-right: 5%;
+  padding: 2%;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.lien-droite {
+  text-align: right;
+  margin-bottom: 5%;
+}
+
+.spanCouleur {
+  color: red;
+  font-weight: 300;
+}
+
+.copyright {
+  font-size: 0.9rem;
+  font-weight: 100;
+  /* margin: 1%; */
+  padding: 1%;
+  background-color: #B4cde1ff;
+}

@@ -1,0 +1,6 @@
+MySQLBench
+
+En local Local instance wampmysql
+
+root
+localhost:3306

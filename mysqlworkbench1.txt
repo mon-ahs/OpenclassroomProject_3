@@ -1,0 +1,39 @@
+MyWorkbench
+
+File New tables
+
+Add tables
+
+table name ==> singulary & underscore
+
+fill in columns
+
+PQ FF and Ai must be filled in for the firstline
+
+Vachar() = name first name or short text
+Int = figures
+Datetime = day & time
+Tinytint = yes or no = vote
+Mediumtext
+
+Logo - needs to be definate by a text (the way)
+
+Account Actor
+
+id-user 
+id-actor
+
+if id-user is used somewhere else go to "Foreign key" to define it
+id-user = account = id-user = id-user
+id-actor  acctor = id-actor = id-actor
+Go back to Colomns
+
+File
+Save as .wmb
+
+Script SQL
+File
+Export
+Forward Engineer 
+next
+
