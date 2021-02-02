@@ -9,6 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="css/desktop.css" media="screen and (min-width: 769px)">
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;500&display=swap" rel="stylesheet">
+	<script src="https://kit.fontawesome.com/e6af1cc587.js" crossorigin="anonymous"></script>
 </head>
 
 <!--
@@ -101,8 +102,8 @@ echo '</pre>';
 			</div>
 			<div class="content-buttons">
 				<button>Nouveau commentaire</button>
-				<button>&#128077</button>
-				<button>&#128078</button>
+				<button><i class="far fa-thumbs-up"></i></button>
+				<button><i class="far fa-thumbs-down"></i></button>
 			</div>
 		</div>
 
