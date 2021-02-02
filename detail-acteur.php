@@ -1,3 +1,46 @@
+<!-- accès à base de données-->
+<?php
+try {
+
+    $bdd = new PDO('mysql:host=localhost;dbname=gbaf;charset=utf8', 'root', '');
+}
+
+catch (Exception $e)
+{
+    die('Erreur : ' . $e->getMessage());
+
+}
+
+$reponse = $bdd->query('select * from actors');
+
+$donnees = $reponse->fetchAll();
+
+ ?>
+
+
+<!-- méthode du cours pour récupérer l'id -->
+
+<?php //ajouter id superieur ou egal a 0
+if(isset($_GET['id']))
+{
+$idActeur = (int) $_GET['id'];
+	echo 'idActeur est ' . $idActeur . ' . ';
+}
+
+else {
+	echo 'id inexistant';
+}
+?>
+
+<!-- méthode du mentor pour récupérer l'id -->
+<?php
+
+echo '<pre>';
+print_r($_GET);
+var_dump($_GET);
+echo '</pre>';
+?>
+
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
 
@@ -36,13 +79,7 @@ NE PAS OUBLIER DE METTRE UN session_start() en début de fichier index.php
 -->
 
 <body>
-<?php
 
-echo '<pre>';
-print_r($_GET);
-var_dump($_GET);
-echo '</pre>';
-?>
 	<!-- SECTION HEADER -->
 	<section id="header-site">
 		<div class="content-header">
@@ -91,11 +128,14 @@ echo '</pre>';
 
 	</section>
 
-	<section id="commentaires">
-		<form method="post">
-			<!-- Faire le formulaire input type textarea -->
-			<!-- Bouton type submit -->
-		</form>
+	<section id="commentaires"> <!-- remplir action avec fichier php prendre exemple sur cible.php dans folder testPHP -->
+		<form class="" action="   " method="post">
+			<p><label>prenom : <input type="text" name="prenom"/></label></p>
+			<p><label>commentaire : <input type="textarea" name="commentaire"/></label></p>
+			<p><input type="submit"/></p>
+
+  </form>
+
 		<div class="content-comments">
 			<div>
 				<p>Commentaires</p>
