@@ -104,46 +104,7 @@ $donnees = $reponse->fetchAll();
     <a class="lien-acteurs" href="detail-acteur.php?id=<?= $value["id"]?> ">lire la suite</a>
   </div>
 <?php endforeach; ?>
-      <!-- acteur1 -->
-
-
-    <!--
-      <div class="display-acteurs">
-        <img class="logo-acteurs" src="images/protectpeople.png" alt="Logo du partenaire Protectpeople">
-
-        <p><span class="spanCouleur">Protectpeople</span> finance la solidarité nationale.
-          Nous appliquons le principe édifié par la Sécurité sociale française en 1945 : permettre à chacun de bénéficier d’une protection sociale.</p>
-      </div>
-
-      <div class="lien-droite">
-        <a class="lien-acteurs" href="page_protectpeople.html">lire la suite</a>
-      </div>
-
-
-      <div class="display-acteurs">
-        <img class="logo-acteurs" src="images/Dsa_france.png" alt="Logo du partenaire DSAFrance">
-
-        <p><span class="spanCouleur">Dsa France</span> accélère la croissance du territoire et s’engage avec les collectivités territoriales.
-          Nous accompagnons les entreprises dans les étapes clés de leur évolution.</p>
-      </div>
-
-      <div class="lien-droite">
-        <a class="lien-acteurs" href="page_dsafrance.html">lire la suite</a>
-      </div>
-
-
-
-      <div class="display-acteurs">
-        <img class="logo-acteurs" src="images/cde.png" alt="Logo du partenaire CDE">
-
-        <p><span class="spanCouleur">La CDE</span> (Chambre Des Entrepreneurs) accompagne les entreprises dans leurs démarches de formation.</p>
-      </div>
-
-      <div class="lien-droite">
-        <a class="lien-acteurs" href="page_cde.html">lire la suite</a>
-      </div>
--->
-
+  
     </div>
 
   </section>
