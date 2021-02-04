@@ -96,7 +96,7 @@ $donnees = $reponse->fetchAll();
         Nous proposons à des personnes issues de tout milieu de devenir entrepreneur grâce à un crédit et un accompagnement professionnel et personnalisé.
         Formation&co est une association française présente sur tout le territoire.
       </p> -->
-      <p><?= $value["description"]?></p>
+      <p><?= $value["description_short"]?></p>
     </div>
   </div>
 
@@ -104,7 +104,7 @@ $donnees = $reponse->fetchAll();
     <a class="lien-acteurs" href="detail-acteur.php?id=<?= $value["id"]?> ">lire la suite</a>
   </div>
 <?php endforeach; ?>
-  
+
     </div>
 
   </section>

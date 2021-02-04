@@ -11,10 +11,6 @@ catch (Exception $e)
 
 }
 
-$reponse = $bdd->query('select * from actors');
-
-$donnees = $reponse->fetchAll();
-
  ?>
 
 
@@ -24,7 +20,11 @@ $donnees = $reponse->fetchAll();
 if(isset($_GET['id']))
 {
 $idActeur = (int) $_GET['id'];
-	echo 'idActeur est ' . $idActeur . ' . ';
+//query
+$reponse = $bdd->query('select * from actors where id=' . $idActeur);
+
+$donnees = $reponse->fetchAll();
+$actor = $donnees[0];
 }
 
 else {
@@ -35,10 +35,9 @@ else {
 <!-- méthode du mentor pour récupérer l'id -->
 <?php
 
-echo '<pre>';
-print_r($_GET);
-var_dump($_GET);
-echo '</pre>';
+//print_r($_GET);
+//var_dump($_GET);
+//echo '</pre>';
 ?>
 
 <!DOCTYPE html>
@@ -98,31 +97,14 @@ NE PAS OUBLIER DE METTRE UN session_start() en début de fichier index.php
 	<!-- SECTION CONTENU -->
 	<section id="contenu">
 
-		<p><img class="logo-acteur1" src="images/formation_co.png" alt="Logo du partenaire Formation&Co"></p>
+		<p><img class="logo-acteur1" src="images/<?= $actor["filename"]?>"  alt="Logo du partenaire <?=$actor["title"]?>"></p>
 
 		<h2 class="title-page">Pr&eacutesentation</h2>
+    <h2 class="spanCouleur"><?=ucfirst($actor["title"])?></h2>
 
-		<!-- <div class="lien-droite">
-			<a class="lien-acteurs" href="page_formationco.html">lire la suite</a>
-		</div> -->
 		<div class="contenu-textuel">
 
-			<p> <span class="spanCouleur">Formation&co</span> est une association française présente sur tout le territoire.
-				Nous proposons à des personnes issues de tout milieu de devenir entrepreneur grâce à un crédit et un accompagnement professionnel et personnalisé.
-				Notre proposition :
-
-			<div>
-
-				<ul class="list-presentation-contenu">
-					<li>un financement jusqu’à 30 000€ ;</li>
-					<li>un suivi personnalisé et gratuit ;</li>
-					<li>une lutte acharnée contre les freins sociétaux et les stéréotypes.</li>
-
-				</ul>
-			</div>
-
-			Le financement est possible, peu importe le métier : coiffeur, banquier, éleveur de chèvres… . Nous collaborons avec des personnes talentueuses et motivées.
-			Vous n’avez pas de diplômes ? Ce n’est pas un problème pour nous ! Nos financements s’adressent à tous.</p>
+			<p><?= $actor["description_short"]?></p>
 
 		</div>
 
