@@ -23,8 +23,8 @@ $idActeur = (int) $_GET['id'];
 //query
 $reponse = $bdd->query('select * from actors where id=' . $idActeur);
 
-$donnees = $reponse->fetchAll();
-$actor = $donnees[0];
+$actor = $reponse->fetch();
+
 }
 
 else {
@@ -100,23 +100,25 @@ NE PAS OUBLIER DE METTRE UN session_start() en début de fichier index.php
 		<p><img class="logo-acteur1" src="images/<?= $actor["filename"]?>"  alt="Logo du partenaire <?=$actor["title"]?>"></p>
 
 		<h2 class="title-page">Pr&eacutesentation</h2>
-    <h2 class="spanCouleur"><?=ucfirst($actor["title"])?></h2>
+
 
 		<div class="contenu-textuel">
 
-			<p><?= $actor["description_short"]?></p>
+			<p>
 
+        <?= $actor["description"]?>
+      </p>
 		</div>
 
 	</section>
 
 	<section id="commentaires"> <!-- remplir action avec fichier php prendre exemple sur cible.php dans folder testPHP -->
-		<form class="" action="   " method="post">
-			<p><label>prenom : <input type="text" name="prenom"/></label></p>
-			<p><label>commentaire : <input type="textarea" name="commentaire"/></label></p>
+		<form class=" " action=" " method="post">
+			<p><label>prenom : </label><input type="text" name="prenom"/></p>
+			<p><label>commentaire : </label><input type="textarea" name="commentaire"/></p>
 			<p><input type="submit"/></p>
 
-  </form>
+    </form>
 
 		<div class="content-comments">
 			<div>
