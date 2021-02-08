@@ -120,3 +120,11 @@ a:hover {
   padding: 1%;
   background-color: #B4cde1ff;
 }
+
+.dblock {
+  display: block;
+}
+
+.dnone {
+  display: none;
+}

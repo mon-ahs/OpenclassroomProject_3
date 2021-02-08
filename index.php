@@ -1,4 +1,5 @@
 <?php
+session_start();
 try {
 
     $bdd = new PDO('mysql:host=localhost;dbname=gbaf;charset=utf8', 'root', '');
@@ -31,6 +32,11 @@ $donnees = $reponse->fetchAll();
 </head>
 
 <body>
+  <?php if (isset($_SESSION['msg'])) : ?>
+
+    <p><?= $_SESSION['msg']; unset($_SESSION['msg']); ?></p>
+
+  <?php endif; ?>
   <!-- SECTION HEADER -->
   <section id="header-site">
     <div class="content-header">

@@ -113,7 +113,7 @@ NE PAS OUBLIER DE METTRE UN session_start() en début de fichier index.php
 	</section>
 
 	<section id="commentaires"> <!-- remplir action avec fichier php prendre exemple sur cible.php dans folder testPHP -->
-		<form class=" " action=" " method="post">
+		<form method="post">
 			<p><label>prenom : </label><input type="text" name="prenom"/></p>
 			<p><label>commentaire : </label><input type="textarea" name="commentaire"/></p>
 			<p><input type="submit"/></p>
