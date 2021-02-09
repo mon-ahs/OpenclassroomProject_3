@@ -9,10 +9,7 @@ catch (Exception $e) {
 }
 
 
-//****************** les mêmes verifs pour tous les champs, avec strlen en fonction de la STRUCTURE de la DB gbaf
-//vérification que les champs existent
-//qu'ils ne sont pas nuls
-//et que leur longueur ets inférieure  à 255
+
 
 $error = 0;
 $msgError = [];
@@ -20,21 +17,58 @@ $msgError = [];
 if (!empty($_POST['register'])) {
 
     if (empty($_POST['firstname'])) {
-        $msgError['firstname'] = "Le pseudo est vide";
+        $msgError['firstname'] = "Le prénom est vide";
         $error++;
     } elseif (strlen($_POST['firstname']) > 45) {
-        $msgError['firstname'] = "Le pseudo est trop long (45 caractères max)";
+        $msgError['firstname'] = "Le prénom est trop long (45 caractères max)";
         $error++;
     }
 
+    if (empty($_POST['lastname'])) {
+        $msgError['lastname'] = "Le nom est vide";
+        $error++;
+    } elseif (strlen($_POST['lastname']) > 45) {
+        $msgError['lastname'] = "Le nom est trop long (45 caractères max)";
+        $error++;
+    }
+
+    if (empty($_POST['username'])) {
+        $msgError['username'] = "Le pseudo est vide";
+        $error++;
+    } elseif (strlen($_POST['username']) > 45) {
+        $msgError['username'] = "Le pseudo est trop long (45 caractères max)";
+        $error++;
+    }
+
+    if (empty($_POST['password'])) {
+        $msgError['password'] = "Le mot de passe est vide";
+        $error++;
+    } elseif (strlen($_POST['password']) > 45) {
+        $msgError['password'] = "Le mot de passe est trop long (45 caractères max)";
+        $error++;
+    }
+    if (empty($_POST['question'])) {
+        $msgError['question'] = "Le question est vide";
+        $error++;
+    } elseif (strlen($_POST['question']) > 45) {
+        $msgError['question'] = "Le question est trop longue (45 caractères max)";
+        $error++;
+    }
+
+    if (empty($_POST['answer'])) {
+        $msgError['answer'] = "Le reponse est vide";
+        $error++;
+    } elseif (strlen($_POST['answer']) > 45) {
+        $msgError['answer'] = "Le reponse est trop longue (45 caractères max)";
+        $error++;
+    }
 
     if ($error === 0) {
 
       $req = $bdd->prepare('INSERT INTO accounts(username, password, firstname, lastname, answer, question) VALUES(?, ?, ?, ?, ?, ?)');
-      //*********************passer les 5 valeurs en $_POST dans le même ordre
       $req->execute(array(
           $_POST['username'],
-          password_hash($_POST['mot_de_passe'], PASSWORD_BCRYPT),
+          password_hash($_POST['password'], PASSWORD_BCRYPT),
           $_POST['firstname'],
           $_POST['lastname'],
           $_POST['answer'],
@@ -44,43 +78,7 @@ if (!empty($_POST['register'])) {
     }
 
 }
-/*
-if (
-((isset($_POST['mot_de_passe'])) AND ($_POST['mot_de_passe'] != null) AND (strlen($_POST['mot_de_passe']) < 70))
-AND ((isset($_POST['username'])) AND ($_POST['username'] != null) AND (strlen($_POST['username']) < 255))
-AND ((isset($_POST['firstname'])) AND ($_POST['firstname'] != null) AND (strlen($_POST['firstname']) < 45))
-AND ((isset($_POST['lastname']))  AND ($_POST['lastname'] != null) AND (strlen($_POST['lastname']) < 45))
-AND ((isset($_POST['question'])) AND ($_POST['question'] != null) AND (strlen($_POST['question']) < 255))
-AND ((isset($_POST['answer']))  AND ($_POST['answer'] != null) AND (strlen($_POST['answer']) < 255))
-)
-{
 
-//inscription en DB avec mot de passe haché
-//*********************** accounts(username,....,...,.... ) VALUES(?, ?, ?, ?, ?)
-
-$req = $bdd->prepare('INSERT INTO accounts(username, password, firstname, lastname, answer, question) VALUES(?, ?, ?, ?, ?, ?)');
-//*********************passer les 5 valeurs en $_POST dans le même ordre
-$req->execute(array(
-  $_POST['username'],
-  password_hash($_POST['mot_de_passe'], PASSWORD_BCRYPT),
-  $_POST['firstname'],
-  $_POST['lastname'],
-  $_POST['answer'],
-  $_POST['question']
-
-));
-
-echo 'Votre compte a bien été créé';
-
-}
-
-//non-inscription - message d'erreur
-else {
-
-echo 'Erreur lors de l\'enregistrement, veuillez réessayer';
-
-}
-*/
  ?>
 
 
@@ -89,7 +87,13 @@ echo 'Erreur lors de l\'enregistrement, veuillez réessayer';
   <head>
     <meta charset="utf-8">
     <title>Page d'inscription</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/tablett.css" media="screen and (min-width: 425px)">
+    <link rel="stylesheet" type="text/css" href="css/desktop.css" media="screen and (min-width: 769px)">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;500&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/e6af1cc587.js" crossorigin="anonymous"></script>
   </head>
 
   <body>
@@ -102,10 +106,7 @@ echo 'Erreur lors de l\'enregistrement, veuillez réessayer';
 
     <h1>INSCRIPTION SUR LE SITE GBAF: </h1>
 
-<!-- formulaire avec username + pwd (déjà fait)
-********* + firstname + lastname + question + answer (type text)
-
--->
+<!-- formulaire  d'inscription -->
     <form method="post">
 
       <p>
@@ -113,26 +114,41 @@ echo 'Erreur lors de l\'enregistrement, veuillez réessayer';
         <input type="text" name="firstname" id="firstname" value="<?= !empty($_POST['firstname']) ? $_POST['firstname'] : '' ?>" />
         <p class="<?= !empty($msgError['firstname']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['firstname']) ? $msgError['firstname'] : '' ?></p>
       </p>
+
       <p>
-        <label>NOM: </label><input type="text" name="lastname"/>
+        <label for="lastname">NOM: </label>
+        <input type="text" name="lastname" id="lastname" value="<?= !empty($_POST['lastname']) ? $_POST['lastname'] : '' ?>" />
+        <p class="<?= !empty($msgError['lastname']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['lastname']) ? $msgError['lastname'] : '' ?></p>
       </p>
+
       <p>
-        <label>PSEUDO: </label><input type="text" name="username"/>
+        <label for="username">PSEUDO: </label>
+        <input type="text" name="username" id="username" value="<?= !empty($_POST['username']) ? $_POST['username'] : '' ?>" />
+        <p class="<?= !empty($msgError['username']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['username']) ? $msgError['username'] : '' ?></p>
       </p>
+
       <p>
-        <label>MOT DE PASSE: </label><input type="password" name="mot_de_passe"/>
+        <label for="password">MOT DE PASSE: </label>
+        <input type="password" name="password" id="password" value="<?= !empty($_POST['password']) ? $_POST['password'] : '' ?>" />
+        <p class="<?= !empty($msgError['password']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['password']) ? $msgError['password'] : '' ?></p>
       </p>
+
       <p>
-        <label>QUESTION SECRETE: </label><input type="text" name="question"/>
+        <label for="question">QUESTION SECRETE: </label>
+        <input type="text" name="question" id="question" value="<?= !empty($_POST['question']) ? $_POST['question'] : '' ?>" />
+        <p class="<?= !empty($msgError['question']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['question']) ? $msgError['question'] : '' ?></p>
       </p>
+
       <p>
-        <label>REPONSE: </label><input type="text" name="answer"/>
+        <label for="answer">REPONSE: </label>
+        <input type="text" name="answer" id="answer" value="<?= !empty($_POST['answer']) ? $_POST['answer'] : '' ?>" />
+        <p class="<?= !empty($msgError['answer']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['answer']) ? $msgError['answer'] : '' ?></p>
       </p>
 
       <input type="submit" name="register" value="Valider"/>
 
-    </form>
 
+      </form>
 
-  </body>
-</html>
+    </body>
+  </html>

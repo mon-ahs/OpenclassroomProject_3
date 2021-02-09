@@ -38,6 +38,7 @@ $donnees = $reponse->fetchAll();
 
   <?php endif; ?>
   <!-- SECTION HEADER -->
+  <header>
   <section id="header-site">
     <div class="content-header">
       <div>
@@ -50,6 +51,7 @@ $donnees = $reponse->fetchAll();
     </div>
 
   </section>
+  </header>
 
   <!-- SECTION PRESENTATION -->
   <section id="presentation">
