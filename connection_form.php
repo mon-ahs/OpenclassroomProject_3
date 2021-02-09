@@ -36,7 +36,6 @@ if (!empty($_POST['connection'])) {
 echo 'pas d error';
     $req = $bdd->prepare('SELECT * FROM accounts WHERE username = :username ');
     $req->execute(array(
-        // $_POST['username'] => 'username'));
         'username' => $username
     ));
 

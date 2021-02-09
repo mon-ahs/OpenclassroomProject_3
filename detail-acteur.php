@@ -1,5 +1,6 @@
 <!-- accès à base de données-->
 <?php
+session_start();
 try {
 
     $bdd = new PDO('mysql:host=localhost;dbname=gbaf;charset=utf8', 'root', '');
@@ -112,7 +113,8 @@ NE PAS OUBLIER DE METTRE UN session_start() en début de fichier index.php
 
 	</section>
 
-	<section id="commentaires"> <!-- remplir action avec fichier php prendre exemple sur cible.php dans folder testPHP -->
+	<section id="commentaires">
+<!-- faire comme pour register avec le input submit => rajouter value etc -->
 		<form method="post">
 			<p><label>prenom : </label><input type="text" name="prenom"/></p>
 			<p><label>commentaire : </label><input type="textarea" name="commentaire"/></p>
@@ -130,6 +132,12 @@ NE PAS OUBLIER DE METTRE UN session_start() en début de fichier index.php
 				<button><i class="far fa-thumbs-down"></i></button>
 			</div>
 		</div>
+
+
+<!-- à enlever, laisser section -->
+<!-- appeler id session pour récupérer le prénom => ajouter session.start() -->
+<!-- afficher avec echo le prénom par la session -->
+
 
 		<div class="comment">
 			<div>Prénom</div>

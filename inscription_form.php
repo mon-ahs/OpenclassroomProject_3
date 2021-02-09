@@ -63,24 +63,40 @@ if (!empty($_POST['register'])) {
         $error++;
     }
 
+//version avec ? et $_POST
+
+  //  if ($error === 0) {
+
+      //$req = $bdd->prepare('INSERT INTO accounts(username, password, firstname, lastname, answer, question) VALUES(?, ?, ?, ?, ?, ?)');
+    //  $req->execute(array(
+        // $_POST['username'],
+        //password_hash($_POST['password'], PASSWORD_BCRYPT),
+        // $_POST['firstname'],
+        //$_POST['lastname'],
+        //$_POST['answer'],
+        //$_POST['question']
+    //  ));
+    //  $_SESSION['msg'] = "Votre compte a bien été créé";
+  //  }
+
+
+//version avec :nomVariable et 'nomVariable' => $_POST
     if ($error === 0) {
 
-      $req = $bdd->prepare('INSERT INTO accounts(username, password, firstname, lastname, answer, question) VALUES(?, ?, ?, ?, ?, ?)');
+      $req = $bdd->prepare('INSERT INTO accounts(username, password, firstname, lastname, answer, question) VALUES(:username, :password, :firstname, :lastname, :answer, :question)');
       $req->execute(array(
-          $_POST['username'],
-          password_hash($_POST['password'], PASSWORD_BCRYPT),
-          $_POST['firstname'],
-          $_POST['lastname'],
-          $_POST['answer'],
-          $_POST['question']
-      ));
+        'username' => $_POST['username'] ,
+        'password' => password_hash($_POST['password'], PASSWORD_BCRYPT) ,
+        'firstname' => $_POST['firstname'] ,
+        'lastname'=> $_POST['lastname'] ,
+        'answer'=> $_POST['answer'],
+        'question'=>$_POST['question'] ));
       $_SESSION['msg'] = "Votre compte a bien été créé";
     }
 
 }
 
  ?>
-
 
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
