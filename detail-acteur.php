@@ -23,7 +23,6 @@ if(isset($_GET['id']))
 $idActeur = (int) $_GET['id'];
 //query
 $reponse = $bdd->query('select * from actors where id=' . $idActeur);
-
 $actor = $reponse->fetch();
 
 }
@@ -39,6 +38,21 @@ else {
 //print_r($_GET);
 //var_dump($_GET);
 //echo '</pre>';
+?>
+
+<?php
+$date = new Datetime();
+$dateaenvoyer = $date->format('y-m-d h:i:s');
+
+if (!empty($_POST['comment'])) {
+      $req = $bdd->prepare('INSERT INTO comments(created_at, content, accounts_id, actors_id) VALUES(:created_at, :content, :accounts_id, :actors_id)');
+      $req->execute(array(
+        'created_at' => $dateaenvoyer,
+        'content' => $_POST['comments'],
+        'accounts_id' => $_SESSION['auth']['id'] ,
+        'actors_id' => $actor["id"]));
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -81,6 +95,7 @@ NE PAS OUBLIER DE METTRE UN session_start() en début de fichier index.php
 <body>
 
 	<!-- SECTION HEADER -->
+  <header>
 	<section id="header-site">
 		<div class="content-header">
 			<div>
@@ -91,8 +106,8 @@ NE PAS OUBLIER DE METTRE UN session_start() en début de fichier index.php
 				<p>nom & pr&eacutenom</p>
 			</div>
 		</div>
-
 	</section>
+    </header>
 
 	<!-- parties logo et contenu -->
 	<!-- SECTION CONTENU -->
@@ -112,52 +127,55 @@ NE PAS OUBLIER DE METTRE UN session_start() en début de fichier index.php
 		</div>
 
 	</section>
+<?php
+//var_dump($_SESSION['auth']);
+  if(isset($_SESSION['auth'])) {
 
+ ?>
 	<section id="commentaires">
 <!-- faire comme pour register avec le input submit => rajouter value etc -->
 		<form method="post">
-			<p><label>prenom : </label><input type="text" name="prenom"/></p>
-			<p><label>commentaire : </label><input type="textarea" name="commentaire"/></p>
-			<p><input type="submit"/></p>
+
+			<p> <label for="comments">COMMENTAIRE : </label>
+          <input type="textarea" name="comments" id="comments" value="<?= !empty($_POST['comments']) ? $_POST['comments'] : '' ?>"/>
+      </p>
+			<p><input type="submit" name="comment" value="Publier"/></p>
 
     </form>
 
-		<div class="content-comments">
-			<div>
-				<p>Commentaires</p>
-			</div>
+    <div class="content-comments">
 			<div class="content-buttons">
-				<button>Nouveau commentaire</button>
 				<button><i class="far fa-thumbs-up"></i></button>
 				<button><i class="far fa-thumbs-down"></i></button>
 			</div>
 		</div>
 
+  <!--  afficher le commentaire publié avec le prénom -->
 
-<!-- à enlever, laisser section -->
-<!-- appeler id session pour récupérer le prénom => ajouter session.start() -->
-<!-- afficher avec echo le prénom par la session -->
-
-
-		<div class="comment">
-			<div>Prénom</div>
-			<div>Date</div>
-			<div>Texte</div>
-		</div>
-
-		<div class="comment">
-			<div>Prénom</div>
-			<div>Date</div>
-			<div>Texte</div>
-		</div>
-
-		<div class="comment">
-			<div>Prénom</div>
-			<div>Date</div>
-			<div>Texte</div>
-		</div>
 
 	</section>
+<?php   }
+ ?>
+
+<?php
+if (!empty($_POST['comment'])) {
+
+  //quand le bouton PUBLIER est cliqué, affiche ce message :
+  echo '<pre>';
+      print_r('Votre commentaire a été pris en compte');
+      echo '<pre>';
+
+  //affiche tous les paramètres de session, une fois passé par connection_form.php
+      print_r($_SESSION);
+      echo '</pre>';
+
+//permet d'afficher le prénom de l'utilisateur connecté
+      echo '<pre>';
+          print_r('Prénom : ' . $_SESSION['auth']['firstname']);
+
+
+}
+ ?>
 
 	<!-- SECTION FOOTER -->
 	<footer id="footer">

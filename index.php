@@ -100,10 +100,7 @@ $donnees = $reponse->fetchAll();
     <img class="logo-acteurs" src="images/<?= $value["filename"]?>" alt="Logo du partenaire <?=$value["title"]?>">
     <div>
       <h2 class="spanCouleur"><?=ucfirst($value["title"])?></h2>
-      <!-- <p><span class="spanCouleur">Formation&Co</span> est une association française présente sur tout le territoire.
-        Nous proposons à des personnes issues de tout milieu de devenir entrepreneur grâce à un crédit et un accompagnement professionnel et personnalisé.
-        Formation&co est une association française présente sur tout le territoire.
-      </p> -->
+    
       <p><?= $value["description_short"]?></p>
     </div>
   </div>
