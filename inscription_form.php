@@ -1,13 +1,11 @@
 <?php
 
-//accès à DB
 try {
 $bdd = new PDO('mysql:host=localhost;dbname=gbaf', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 }
 catch (Exception $e) {
   die('Erreur : ' . $e->getMessage());
 }
-
 
 
 
@@ -145,7 +143,7 @@ if (!empty($_POST['register'])) {
 
       <p>
         <label for="password">MOT DE PASSE: </label>
-        <input type="password" name="password" id="password" value="<?= !empty($_POST['password']) ? $_POST['password'] : '' ?>" />
+        <input type="password" name="password" id="password"/>
         <p class="<?= !empty($msgError['password']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['password']) ? $msgError['password'] : '' ?></p>
       </p>
 

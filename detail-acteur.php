@@ -1,4 +1,4 @@
-<!-- accès à base de données-->
+
 <?php
 session_start();
 try {
@@ -53,6 +53,14 @@ if (!empty($_POST['comment'])) {
         'actors_id' => $actor["id"]));
 }
 
+    $req = $bdd->prepare('SELECT * FROM comments');
+    $req->execute(array(
+));
+
+$resultat = $req->fetchAll();
+//echo '<pre>';
+//print_r($resultat);
+//echo '</pre>';
 ?>
 
 <!DOCTYPE html>
@@ -143,12 +151,7 @@ NE PAS OUBLIER DE METTRE UN session_start() en début de fichier index.php
 
     </form>
 
-    <div class="content-comments">
-			<div class="content-buttons">
-				<button><i class="far fa-thumbs-up"></i></button>
-				<button><i class="far fa-thumbs-down"></i></button>
-			</div>
-		</div>
+
 
   <!--  afficher le commentaire publié avec le prénom -->
 
@@ -156,6 +159,24 @@ NE PAS OUBLIER DE METTRE UN session_start() en début de fichier index.php
 	</section>
 <?php   }
  ?>
+ <div class="content-comments">
+   <div class="content-buttons">
+     <form method="post">
+       <button><i class="far fa-thumbs-up"></i></button>
+     </form>
+     <form method="post">
+       <button><i class="far fa-thumbs-down"></i></button>
+     </form>
+   </div>
+   <div class="comment">
+    <?php foreach ($resultat as $key => $value): ?>
+     <p>Prenom : <?=ucfirst($value["id"])?></p>
+     <p>Date :  <?=ucfirst($value["created_at"])?> </p>
+     <p>Commentaire : <?=ucfirst($value["content"])?></p>
+    <?php endforeach; ?>
+   </div>
+ </div>
+
 
 <?php
 if (!empty($_POST['comment'])) {

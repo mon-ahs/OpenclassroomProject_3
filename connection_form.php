@@ -32,7 +32,6 @@ if (!empty($_POST['connection'])) {
   if ($error === 0) {
     $username = htmlspecialchars($_POST['username']);
 
-
 echo 'pas d error';
     $req = $bdd->prepare('SELECT * FROM accounts WHERE username = :username ');
     $req->execute(array(
@@ -87,7 +86,6 @@ echo '</pre>';
 //  $req = $bdd->prepare('SELECT id, password FROM accounts WHERE username = " ' .$_POST['username'] . ' " ');
 
 ?>
-
 
 
 <!DOCTYPE html>

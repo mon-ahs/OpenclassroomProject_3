@@ -49,7 +49,6 @@ $donnees = $reponse->fetchAll();
         <p>nom & pr&eacutenom</p>
       </div>
     </div>
-
   </section>
   </header>
 
@@ -100,7 +99,7 @@ $donnees = $reponse->fetchAll();
     <img class="logo-acteurs" src="images/<?= $value["filename"]?>" alt="Logo du partenaire <?=$value["title"]?>">
     <div>
       <h2 class="spanCouleur"><?=ucfirst($value["title"])?></h2>
-    
+
       <p><?= $value["description_short"]?></p>
     </div>
   </div>
