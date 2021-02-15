@@ -1,15 +1,21 @@
-
 <?php
 session_start();
-try {
 
+print_r($_POST);
+
+
+if (!isset($_SESSION['auth']['username'])) {
+  header('Location: index.php');
+  exit;
+}
+
+try {
     $bdd = new PDO('mysql:host=localhost;dbname=gbaf;charset=utf8', 'root', '');
 }
 
 catch (Exception $e)
 {
     die('Erreur : ' . $e->getMessage());
-
 }
 
  ?>
@@ -20,44 +26,41 @@ catch (Exception $e)
 <?php //ajouter id superieur ou egal a 0
 if(isset($_GET['id']))
 {
-$idActeur = (int) $_GET['id'];
-//query
-$reponse = $bdd->query('select * from actors where id=' . $idActeur);
-$actor = $reponse->fetch();
-
+    $idActeur = (int) $_GET['id'];
+    //query
+    $reponse = $bdd->query('select * from actors where id=' . $idActeur);
+    $actor = $reponse->fetch();
+} else {
+    $_SESSION['msg'] = "Partenaire introuvable";
+  	header('Location: acteurs.php');
 }
 
-else {
-	echo 'id inexistant';
-}
-?>
-
-<!-- méthode du mentor pour récupérer l'id -->
-<?php
-
-//print_r($_GET);
-//var_dump($_GET);
-//echo '</pre>';
-?>
-
-<?php
-$date = new Datetime();
-$dateaenvoyer = $date->format('y-m-d h:i:s');
 
 if (!empty($_POST['comment'])) {
+      $date = new Datetime();
+      $dateaenvoyer = $date->format('y-m-d H:i:s');
       $req = $bdd->prepare('INSERT INTO comments(created_at, content, accounts_id, actors_id) VALUES(:created_at, :content, :accounts_id, :actors_id)');
       $req->execute(array(
         'created_at' => $dateaenvoyer,
         'content' => $_POST['comments'],
         'accounts_id' => $_SESSION['auth']['id'] ,
         'actors_id' => $actor["id"]));
+      $_SESSION['msg'] = "Votre commentaire a bien été ajouté";
 }
-
-    $req = $bdd->prepare('SELECT * FROM comments');
-    $req->execute(array(
-));
-
+$sql = 'SELECT c.content, c.created_at, a.username FROM comments as c INNER JOIN accounts as a ON c.accounts_id = a.id';
+$req = $bdd->query($sql);
+$req->execute();
 $resultat = $req->fetchAll();
+$resultat2 = $req->rowcount();
+/*
+$sql2 = 'SELECT id FROM comments';
+$req2 = $bdd->query($sql);
+$req2->execute();
+$resultat2 = $req2->rowcount();
+
+echo '<pre>';
+print_r($resultat2);
+die();*/
 //echo '<pre>';
 //print_r($resultat);
 //echo '</pre>';
@@ -101,7 +104,11 @@ NE PAS OUBLIER DE METTRE UN session_start() en début de fichier index.php
 -->
 
 <body>
+  <?php if (isset($_SESSION['msg'])) : ?>
 
+    <p><?= $_SESSION['msg']; unset($_SESSION['msg']); ?></p>
+
+  <?php endif; ?>
 	<!-- SECTION HEADER -->
   <header>
 	<section id="header-site">
@@ -135,11 +142,7 @@ NE PAS OUBLIER DE METTRE UN session_start() en début de fichier index.php
 		</div>
 
 	</section>
-<?php
-//var_dump($_SESSION['auth']);
-  if(isset($_SESSION['auth'])) {
 
- ?>
 	<section id="commentaires">
 <!-- faire comme pour register avec le input submit => rajouter value etc -->
 		<form method="post">
@@ -152,27 +155,34 @@ NE PAS OUBLIER DE METTRE UN session_start() en début de fichier index.php
     </form>
 
 
-
+<p><?= $resultat2 ?></p>
   <!--  afficher le commentaire publié avec le prénom -->
 
 
 	</section>
-<?php   }
- ?>
+
  <div class="content-comments">
    <div class="content-buttons">
      <form method="post">
        <button><i class="far fa-thumbs-up"></i></button>
+       <input type="hidden" name="up" value="upvote">
      </form>
      <form method="post">
        <button><i class="far fa-thumbs-down"></i></button>
+       <input type="hidden" name="down" value="downvote">
      </form>
    </div>
-   <div class="comment">
-    <?php foreach ($resultat as $key => $value): ?>
-     <p>Prenom : <?=ucfirst($value["id"])?></p>
-     <p>Date :  <?=ucfirst($value["created_at"])?> </p>
-     <p>Commentaire : <?=ucfirst($value["content"])?></p>
+   <div class="">
+    <?php foreach ($resultat as $value): ?>
+      <div class="comment">
+        <?php
+            $date = new DateTime($value["created_at"]);
+            $date->setTimezone(new DateTimeZone('Europe/Paris'));
+        ?>
+     <p>Prenom : <?= ucfirst($value["username"]) ?></p>
+     <p>Date :  <?= 'Le ' . $date->format('d-m-y') . ' à ' . $date->format('H:i:s') ?> </p>
+     <p>Commentaire : <?= ucfirst($value["content"]) ?></p>
+     </div>
     <?php endforeach; ?>
    </div>
  </div>

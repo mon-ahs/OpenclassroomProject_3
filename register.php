@@ -1,4 +1,9 @@
 <?php
+session_start();
+if (isset($_SESSION['auth']['username'])) {
+  header('Location: acteurs.php');
+  exit;
+}
 
 try {
 $bdd = new PDO('mysql:host=localhost;dbname=gbaf', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
@@ -126,7 +131,7 @@ if (!empty($_POST['register'])) {
       <p>
         <label for="firstname">PRENOM: </label>
         <input type="text" name="firstname" id="firstname" value="<?= !empty($_POST['firstname']) ? $_POST['firstname'] : '' ?>" />
-        <p class="<?= !empty($msgError['firstname']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['firstname']) ? $msgError['firstname'] : '' ?></p>
+        <span class="<?= !empty($msgError['firstname']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['firstname']) ? $msgError['firstname'] : '' ?></span>
       </p>
 
       <p>
