@@ -101,6 +101,21 @@ if (!empty($_POST['connection'])) {
 
     <?php endif; ?>
 
+    <!-- SECTION HEADER -->
+    <header>
+    <section id="header-site">
+      <div class="content-header">
+        <div>
+          <p><img class="img-logo" src="images/GBAF.png" alt="Logo"></p>
+        </div>
+        <div class="content-user">
+          <img class="img-user" src="images/user.png" alt="utilisateur">
+          <p>nom & pr&eacutenom</p>
+        </div>
+      </div>
+    </section>
+    </header>
+
     <h1>CONNEXION:</h1>
 
       <form method="post">
@@ -125,7 +140,9 @@ if (!empty($_POST['connection'])) {
         ?>
       </form>
 
-    <!-- ajout formulaire avec username + password -(** type) -->
-
+    <!-- SECTION FOOTER -->
+    <footer id="footer">
+      <p class="copyright">Mentions légales Contact</p>
+    </footer>
   </body>
 </html>

@@ -51,7 +51,7 @@ $sql = 'SELECT c.content, c.created_at, a.username FROM comments as c INNER JOIN
 $req = $bdd->query($sql);
 $req->execute();
 $resultat = $req->fetchAll();
-$resultat2 = $req->rowcount();
+$totalComments = $req->rowcount();
 /*
 $sql2 = 'SELECT id FROM comments';
 $req2 = $bdd->query($sql);
@@ -144,7 +144,7 @@ NE PAS OUBLIER DE METTRE UN session_start() en début de fichier index.php
 	</section>
 
 	<section id="commentaires">
-<!-- faire comme pour register avec le input submit => rajouter value etc -->
+<!--  comme dans register.php : utiliser la span pour afficher message d'erreur si le champ est vide -->
 		<form method="post">
 
 			<p> <label for="comments">COMMENTAIRE : </label>
@@ -155,8 +155,7 @@ NE PAS OUBLIER DE METTRE UN session_start() en début de fichier index.php
     </form>
 
 
-<p><?= $resultat2 ?></p>
-  <!--  afficher le commentaire publié avec le prénom -->
+<p><?= $totalComments  ?> commentaires</p>
 
 
 	</section>

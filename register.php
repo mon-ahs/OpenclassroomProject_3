@@ -123,6 +123,22 @@ if (!empty($_POST['register'])) {
 
     <?php endif; ?>
 
+
+    <!-- SECTION HEADER -->
+    <header>
+    <section id="header-site">
+      <div class="content-header">
+        <div>
+          <p><img class="img-logo" src="images/GBAF.png" alt="Logo"></p>
+        </div>
+        <div class="content-user">
+          <img class="img-user" src="images/user.png" alt="utilisateur">
+          <p>nom & pr&eacutenom</p>
+        </div>
+      </div>
+    </section>
+    </header>
+
     <h1>INSCRIPTION SUR LE SITE GBAF: </h1>
 
 <!-- formulaire  d'inscription -->
@@ -137,31 +153,31 @@ if (!empty($_POST['register'])) {
       <p>
         <label for="lastname">NOM: </label>
         <input type="text" name="lastname" id="lastname" value="<?= !empty($_POST['lastname']) ? $_POST['lastname'] : '' ?>" />
-        <p class="<?= !empty($msgError['lastname']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['lastname']) ? $msgError['lastname'] : '' ?></p>
+        <span class="<?= !empty($msgError['lastname']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['lastname']) ? $msgError['lastname'] : '' ?></span>
       </p>
 
       <p>
         <label for="username">PSEUDO: </label>
         <input type="text" name="username" id="username" value="<?= !empty($_POST['username']) ? $_POST['username'] : '' ?>" />
-        <p class="<?= !empty($msgError['username']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['username']) ? $msgError['username'] : '' ?></p>
+        <span class="<?= !empty($msgError['username']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['username']) ? $msgError['username'] : '' ?></span>
       </p>
 
       <p>
         <label for="password">MOT DE PASSE: </label>
         <input type="password" name="password" id="password"/>
-        <p class="<?= !empty($msgError['password']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['password']) ? $msgError['password'] : '' ?></p>
+        <span class="<?= !empty($msgError['password']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['password']) ? $msgError['password'] : '' ?></span>
       </p>
 
       <p>
         <label for="question">QUESTION SECRETE: </label>
         <input type="text" name="question" id="question" value="<?= !empty($_POST['question']) ? $_POST['question'] : '' ?>" />
-        <p class="<?= !empty($msgError['question']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['question']) ? $msgError['question'] : '' ?></p>
+        <span class="<?= !empty($msgError['question']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['question']) ? $msgError['question'] : '' ?></span>
       </p>
 
       <p>
         <label for="answer">REPONSE: </label>
         <input type="text" name="answer" id="answer" value="<?= !empty($_POST['answer']) ? $_POST['answer'] : '' ?>" />
-        <p class="<?= !empty($msgError['answer']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['answer']) ? $msgError['answer'] : '' ?></p>
+        <span class="<?= !empty($msgError['answer']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['answer']) ? $msgError['answer'] : '' ?></span>
       </p>
 
       <input type="submit" name="register" value="Valider"/>
@@ -169,5 +185,12 @@ if (!empty($_POST['register'])) {
 
       </form>
 
+      <!-- SECTION FOOTER -->
+    	<footer id="footer">
+    		<p class="copyright">Mentions légales Contact</p>
+    	</footer>
+
+
+      
     </body>
   </html>
