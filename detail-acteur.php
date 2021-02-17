@@ -36,7 +36,8 @@ if(isset($_GET['id']))
 }
 
 
-if (!empty($_POST['comment'])) {
+if (!empty($_POST['comments'])) {
+      $msgError['content'] ="";
       $date = new Datetime();
       $dateaenvoyer = $date->format('y-m-d H:i:s');
       $req = $bdd->prepare('INSERT INTO comments(created_at, content, accounts_id, actors_id) VALUES(:created_at, :content, :accounts_id, :actors_id)');
@@ -46,7 +47,11 @@ if (!empty($_POST['comment'])) {
         'accounts_id' => $_SESSION['auth']['id'] ,
         'actors_id' => $actor["id"]));
       $_SESSION['msg'] = "Votre commentaire a bien été ajouté";
+} else {
+  $msgError['content'] = "Vous avez oublie de rentrer votre commentaire";
 }
+
+
 $sql = 'SELECT c.content, c.created_at, a.username FROM comments as c INNER JOIN accounts as a ON c.accounts_id = a.id';
 $req = $bdd->query($sql);
 $req->execute();
@@ -147,8 +152,10 @@ NE PAS OUBLIER DE METTRE UN session_start() en début de fichier index.php
 <!--  comme dans register.php : utiliser la span pour afficher message d'erreur si le champ est vide -->
 		<form method="post">
 
-			<p> <label for="comments">COMMENTAIRE : </label>
-          <input type="textarea" name="comments" id="comments" value="<?= !empty($_POST['comments']) ? $_POST['comments'] : '' ?>"/>
+			<p>
+        <label for="comments">COMMENTAIRE : </label>
+        <input type="textarea" name="comments" id="comments" value="<?= !empty($_POST['comments']) ? $_POST['comments'] : '' ?>"/>
+        <span class="<?= !empty($msgError['content']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['content']) ? $msgError['content'] : '' ?></span>
       </p>
 			<p><input type="submit" name="comment" value="Publier"/></p>
 
