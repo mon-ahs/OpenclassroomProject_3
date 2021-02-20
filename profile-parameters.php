@@ -18,22 +18,48 @@ catch (Exception $e)
     die('Erreur : ' . $e->getMessage());
 }
 
+
+
 if (!empty($_POST['update'])) {
-// update instead of insert
 
 
-  //$req = $bdd->prepare('INSERT INTO accounts(username, password, firstname, lastname, answer, question) VALUES(:username, :password, :firstname, :lastname, :answer, :question)');
-//  $req->execute(array(
-    //'username' => $_POST['username'] ,
-    //'password' => password_hash($_POST['password'], PASSWORD_BCRYPT) ,
-  //  'firstname' => $_POST['firstname'] ,
-  //  'lastname'=> $_POST['lastname'] ,
-  //  'answer'=> $_POST['answer'],
-  //  'question'=>$_POST['question'] ));
-  //$_SESSION['msg'] = "Votre compte a bien été créé";
+$id = $_SESSION['auth']['id'];
+
+
+
+
+//update request :
+
+$username = $_POST["username"];
+$password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+$firstname = $_POST["firstname"];
+$lastname = $_POST["lastname"];
+$answer = $_POST["answer"];
+$question = $_POST["question"];
+
+ $req = $bdd->prepare('UPDATE accounts SET username = :username , password = :password , firstname = :firstname , lastname = :lastname  , answer = :answer , question = :question  WHERE id = :id');
+$req->execute(array(
+
+       'username' => $username,
+
+       'password' => $password,
+
+       'firstname' => $firstname,
+
+       'lastname' => $lastname,
+
+       'answer'=> $answer,
+
+       'question' => $question,
+
+       'id'  => $id
+
+     ));
+
+
+    $_SESSION['msg'] = "Votre compte a bien été mis a jour";
 
 }
-
  ?>
 
 <!DOCTYPE html>
@@ -86,16 +112,17 @@ if (!empty($_POST['update'])) {
         </p>
 
         <p>
-          <label for="username">PSEUDO: </label>
-          <input type="text" name="username" id="username" value="<?= !empty($_POST['username']) ? $_POST['username'] : '' ?>" />
-          <span class="<?= !empty($msgError['username']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['username']) ? $msgError['username'] : '' ?></span>
+           <label for="username">PSEUDO: </label>
+           <input type="text" name="username" id="username" value="<?= !empty($_POST['username']) ? $_POST['username'] : '' ?>" />
+           <span class="<?= !empty($msgError['username']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['username']) ? $msgError['username'] : '' ?></span>
         </p>
 
         <p>
-          <label for="password">MOT DE PASSE: </label>
-          <input type="password" name="password" id="password"/>
-          <span class="<?= !empty($msgError['password']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['password']) ? $msgError['password'] : '' ?></span>
+           <label for="password">MOT DE PASSE: </label>
+           <input type="password" name="password" id="password"/>
+           <span class="<?= !empty($msgError['password']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['password']) ? $msgError['password'] : '' ?></span>
         </p>
+
 
         <p>
           <label for="question">QUESTION SECRETE: </label>
