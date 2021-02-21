@@ -6,6 +6,9 @@ if (isset($_SESSION['auth']['username'])) {
   header('Location: acteurs.php');
   exit;
 }
+
+
+
 //$_SESSION['username'] = '';
 
 //try accès DB
@@ -126,8 +129,11 @@ if (!empty($_POST['response']) and ($_POST['matchingUsername'] == true)) {
     </section>
     </header>
 
-    <h1>CONNEXION:</h1>
+    <h1>MODIFICATION MOT DE PASSE</h1>
 
+      <p>
+        Entrez votre pseudo pour acceder a votre question secrete :
+      </p>
       <form method="post">
 
         <p>

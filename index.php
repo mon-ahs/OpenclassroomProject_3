@@ -133,12 +133,11 @@ if (!empty($_POST['connection'])) {
         </p>
 
         <input type="submit" value="Se connecter" name="connection">
-        <?php
-        echo '<pre>';
-        print_r($_SESSION);
-        echo '</pre>';
-        ?>
+
       </form>
+
+      <a href="forgotten_password.php">Mot de passe oublie</a>
+
 
     <!-- SECTION FOOTER -->
     <footer id="footer">

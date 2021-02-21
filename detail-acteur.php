@@ -1,8 +1,6 @@
 <?php
 session_start();
 
-print_r($_POST);
-
 
 if (!isset($_SESSION['auth']['username'])) {
   header('Location: index.php');
@@ -117,13 +115,18 @@ NE PAS OUBLIER DE METTRE UN session_start() en début de fichier index.php
 	<!-- SECTION HEADER -->
   <header>
 	<section id="header-site">
+    <form action="disconnection.php" method="post">
+       <p><input type="submit" name="disconnect" value="Deconnexion"/></p>
+    </form>
 		<div class="content-header">
 			<div>
 				<p><img class="img-logo" src="images/GBAF.png" alt="Logo"></p>
 			</div>
 			<div class="content-user">
 				<img class="img-user" src="images/user.png" alt="utilisateur">
-				<p>nom & pr&eacutenom</p>
+				<p>
+          <?=$_SESSION['auth']['lastname']?> <?=$_SESSION['auth']['firstname']?>
+        </p>
 			</div>
 		</div>
 	</section>
