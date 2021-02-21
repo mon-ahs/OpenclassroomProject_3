@@ -71,6 +71,9 @@ if (!empty($_POST['response']) and ($_POST['matchingUsername'] == true)) {
 
                $_SESSION['msg'] = "Votre mot de passe a bien été mis a jour";
 
+              //sleep(5);
+
+              header('Location: index.php');
 
     } else {
          $_SESSION['msg'] = 'La réponse ne correspond pas, veuillez recommencer';
@@ -110,9 +113,12 @@ if (!empty($_POST['response']) and ($_POST['matchingUsername'] == true)) {
 
     <?php if (isset($_SESSION['msg'])) : ?>
 
-      <p><?= $_SESSION['msg']; unset($_SESSION['msg']); ?></p>
+      <p><?= $_SESSION['msg']; ?></p>
 
-    <?php endif; ?>
+    <?php
+    unset($_SESSION['msg']);
+    endif;
+    ?>
 
     <!-- SECTION HEADER -->
     <header>
@@ -167,8 +173,8 @@ if (!empty($_POST['response']) and ($_POST['matchingUsername'] == true)) {
         <span class="<?= !empty($msgError['password']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['password']) ? $msgError['password'] : '' ?></span>
       </p>
 
-      <input id="matchingUsername" name="matchingUsername" type="hidden" value="true">
-      <input id="db_answer" name="db_answer" type="hidden" value="<?=$resultat['answer']?>">
+      <input id="matchingUsername" name="matchingUsername" hidden value="true">
+      <input id="db_answer" name="db_answer" hidden value="<?=$resultat['answer']?>">
 
       <input type="submit" value="Envoyer" name="response">
 

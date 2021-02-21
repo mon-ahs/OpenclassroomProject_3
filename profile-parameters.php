@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-print_r($_POST);
+//print_r($_POST);
 
 
 if (!isset($_SESSION['auth']['username'])) {
@@ -18,14 +18,17 @@ catch (Exception $e)
     die('Erreur : ' . $e->getMessage());
 }
 
-
-
-if (!empty($_POST['update'])) {
-
-
 $id = $_SESSION['auth']['id'];
 
+//select request to display fields in form
+$req = $bdd->prepare('SELECT * FROM accounts WHERE id = :id ');
+$req->execute(array(
+    'id' => $id
+));
 
+$resultat = $req->fetch();
+
+if (!empty($_POST['update'])) {
 
 
 //update request :
@@ -78,6 +81,15 @@ $req->execute(array(
 
 <body>
 
+  <?php if (isset($_SESSION['msg'])) : ?>
+
+    <p><?= $_SESSION['msg']; ?></p>
+
+  <?php
+  unset($_SESSION['msg']);
+  endif;
+  ?>
+
   <!-- SECTION HEADER -->
   <header>
   <section id="header-site">
@@ -96,7 +108,7 @@ $req->execute(array(
   </section>
   </header>
 
-  <h1>Profil utilisateur: </h1>
+  <h1>Profil utilisateur - changer les parametres voulus: </h1>
 
 
   <!-- formulaire parametres du compte utilisateur   -->
@@ -104,38 +116,38 @@ $req->execute(array(
 
         <p>
           <label for="firstname">PRENOM: </label>
-          <input type="text" name="firstname" id="firstname" value="<?= !empty($_POST['firstname']) ? $_POST['firstname'] : '' ?>" />
+          <input type="text" name="firstname" id="firstname" value="<?= !empty($_POST['firstname']) ? $_POST['firstname'] : $resultat['firstname'] ?>" />
           <span class="<?= !empty($msgError['firstname']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['firstname']) ? $msgError['firstname'] : '' ?></span>
         </p>
 
         <p>
           <label for="lastname">NOM: </label>
-          <input type="text" name="lastname" id="lastname" value="<?= !empty($_POST['lastname']) ? $_POST['lastname'] : '' ?>" />
+          <input type="text" name="lastname" id="lastname" value="<?= !empty($_POST['lastname']) ? $_POST['lastname'] : $resultat['lastname']  ?>" />
           <span class="<?= !empty($msgError['lastname']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['lastname']) ? $msgError['lastname'] : '' ?></span>
         </p>
 
         <p>
            <label for="username">PSEUDO: </label>
-           <input type="text" name="username" id="username" value="<?= !empty($_POST['username']) ? $_POST['username'] : '' ?>" />
+           <input type="text" name="username" id="username" value="<?= !empty($_POST['username']) ? $_POST['username'] : $resultat['username'] ?>" />
            <span class="<?= !empty($msgError['username']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['username']) ? $msgError['username'] : '' ?></span>
         </p>
 
         <p>
            <label for="password">MOT DE PASSE: </label>
-           <input type="password" name="password" id="password"/>
+           <input type="password" name="password" id="password"  value="<?= !empty($_POST['password']) ? $_POST['password'] : $resultat['password'] ?>"/>
            <span class="<?= !empty($msgError['password']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['password']) ? $msgError['password'] : '' ?></span>
         </p>
 
 
         <p>
           <label for="question">QUESTION SECRETE: </label>
-          <input type="text" name="question" id="question" value="<?= !empty($_POST['question']) ? $_POST['question'] : '' ?>" />
+          <input type="text" name="question" id="question" value="<?= !empty($_POST['question']) ? $_POST['question'] : $resultat['question']  ?>" />
           <span class="<?= !empty($msgError['question']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['question']) ? $msgError['question'] : '' ?></span>
         </p>
 
         <p>
           <label for="answer">REPONSE: </label>
-          <input type="text" name="answer" id="answer" value="<?= !empty($_POST['answer']) ? $_POST['answer'] : '' ?>" />
+          <input type="text" name="answer" id="answer" value="<?= !empty($_POST['answer']) ? $_POST['answer'] : $resultat['answer'] ?>" />
           <span class="<?= !empty($msgError['answer']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['answer']) ? $msgError['answer'] : '' ?></span>
         </p>
 

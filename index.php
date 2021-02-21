@@ -6,6 +6,8 @@ if (isset($_SESSION['auth']['username'])) {
   header('Location: acteurs.php');
   exit;
 }
+
+
 //$_SESSION['username'] = '';
 
 //try accès DB
@@ -97,9 +99,12 @@ if (!empty($_POST['connection'])) {
 
     <?php if (isset($_SESSION['msg'])) : ?>
 
-      <p><?= $_SESSION['msg']; unset($_SESSION['msg']); ?></p>
+      <p><?= $_SESSION['msg']; ?></p>
 
-    <?php endif; ?>
+    <?php
+    unset($_SESSION['msg']);
+    endif; 
+    ?>
 
     <!-- SECTION HEADER -->
     <header>
