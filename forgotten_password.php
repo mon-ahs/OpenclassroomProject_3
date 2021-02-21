@@ -19,7 +19,6 @@ catch (Exception $e) {
 $error = 0;
 $msgError = [];
 $resultat = '';
-$answer = '';
 
 if (!empty($_POST['forgottenPwd'])) {
 
@@ -41,7 +40,7 @@ if (!empty($_POST['forgottenPwd'])) {
         if ($resultat)
         {
           $_SESSION['msg'] = 'Veuillez repondre à votre question secrete';
-
+          $_SESSION['auth']['id'] = $resultat['id'];
 
         } else {
                 $_SESSION['msg'] = 'Veuillez rentrer un pseudo existant';
@@ -54,8 +53,22 @@ if (!empty($_POST['forgottenPwd'])) {
 
 if (!empty($_POST['response']) and ($_POST['matchingUsername'] == true)) {
     if ($_POST['db_answer'] == $_POST['answer']) {
-          $_SESSION['msg'] = 'La requete SQL va partir, quand elle sera ecrite';
+
           //requete pour update MDP avec fonction de chiffrage
+
+          $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+          $req = $bdd->prepare('UPDATE accounts SET password = :password WHERE id = :id');
+           $req->execute(array(
+
+                  'password' => $password,
+
+                  'id'  => $_SESSION['auth']['id']
+
+                ));
+
+               $_SESSION['msg'] = "Votre mot de passe a bien été mis a jour";
+
+
     } else {
          $_SESSION['msg'] = 'La réponse ne correspond pas, veuillez recommencer';
     }
