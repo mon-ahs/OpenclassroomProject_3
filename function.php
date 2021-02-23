@@ -32,7 +32,7 @@ function getTotalComments() {
   $sql = 'SELECT c.content, c.created_at, a.username FROM comments as c INNER JOIN accounts as a ON c.accounts_id = a.id';
   $req = $bdd->query($sql);
   $req->execute();
-  $resultat = $req->fetchAll();
+  //$resultat = $req->fetchAll()
   return $req->rowcount();
 }
 

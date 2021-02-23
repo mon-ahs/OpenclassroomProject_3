@@ -46,23 +46,23 @@ if (!empty($_POST['register'])) {
     if (empty($_POST['password'])) {
         $msgError['password'] = "Le mot de passe est vide";
         $error++;
-    } elseif (strlen($_POST['password']) > 45) {
-        $msgError['password'] = "Le mot de passe est trop long (45 caractères max)";
+    } elseif (strlen($_POST['password']) > 70) {
+        $msgError['password'] = "Le mot de passe est trop long (70 caractères max)";
         $error++;
     }
     if (empty($_POST['question'])) {
         $msgError['question'] = "Le question est vide";
         $error++;
-    } elseif (strlen($_POST['question']) > 45) {
-        $msgError['question'] = "Le question est trop longue (45 caractères max)";
+    } elseif (strlen($_POST['question']) > 255) {
+        $msgError['question'] = "Le question est trop longue (255 caractères max)";
         $error++;
     }
 
     if (empty($_POST['answer'])) {
         $msgError['answer'] = "Le reponse est vide";
         $error++;
-    } elseif (strlen($_POST['answer']) > 45) {
-        $msgError['answer'] = "Le reponse est trop longue (45 caractères max)";
+    } elseif (strlen($_POST['answer']) > 255) {
+        $msgError['answer'] = "Le reponse est trop longue (255 caractères max)";
         $error++;
     }
 
