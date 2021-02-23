@@ -23,6 +23,21 @@ if(isset($_GET['id']))
     //query
     $actor = getActor($idActeur);
 
+    $idAccount = $_SESSION['auth']['id'];
+
+// * enlever appel bdd qd ds function
+    $bdd = getBdd();
+
+//requete sql pour récupérer le total des votes pour cet utilisateur et concernant cet acteur
+    $req = $bdd->prepare('SELECT * FROM votes WHERE actors_id = :actors_id AND accounts_id = :accounts_id');
+    $req->execute(array(
+        'actors_id' => $idActeur,
+        'accounts_id' => $idAccount
+    ));
+
+    $votes = $req->fetchAll();
+
+    print_r($votes);
     // ici requête SELECT * from votes where actorid = $idActeur and accountid = $_SESSION(id)
 
 } else {
