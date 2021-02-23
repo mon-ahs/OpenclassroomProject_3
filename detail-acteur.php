@@ -1,20 +1,15 @@
 <?php
 session_start();
 
+require 'function.php';
+
 
 if (!isset($_SESSION['auth']['username'])) {
   header('Location: index.php');
   exit;
 }
 
-try {
-    $bdd = new PDO('mysql:host=localhost;dbname=gbaf;charset=utf8', 'root', '');
-}
 
-catch (Exception $e)
-{
-    die('Erreur : ' . $e->getMessage());
-}
 
  ?>
 
@@ -26,35 +21,57 @@ if(isset($_GET['id']))
 {
     $idActeur = (int) $_GET['id'];
     //query
-    $reponse = $bdd->query('select * from actors where id=' . $idActeur);
-    $actor = $reponse->fetch();
+    $actor = getActor($idActeur);
+
+    // ici requête SELECT * from votes where actorid = $idActeur and accountid = $_SESSION(id)
+
 } else {
     $_SESSION['msg'] = "Partenaire introuvable";
   	header('Location: acteurs.php');
 }
 
+$error = 0;
+$msgError = [];
 
-if (!empty($_POST['comments'])) {
-      $msgError['content'] ="";
-      $date = new Datetime();
-      $dateaenvoyer = $date->format('y-m-d H:i:s');
-      $req = $bdd->prepare('INSERT INTO comments(created_at, content, accounts_id, actors_id) VALUES(:created_at, :content, :accounts_id, :actors_id)');
-      $req->execute(array(
-        'created_at' => $dateaenvoyer,
-        'content' => $_POST['comments'],
-        'accounts_id' => $_SESSION['auth']['id'] ,
-        'actors_id' => $actor["id"]));
-      $_SESSION['msg'] = "Votre commentaire a bien été ajouté";
-} else {
-  $msgError['content'] = "Vous avez oublie de rentrer votre commentaire";
+if (!empty($_POST['up'])) {
+    // récupérer l'id de l'acteur
+    // récupérer l'id du user ($_SESSION)
+    // UPDATE VERS BDD avec opinion = 1
 }
 
+if (!empty($_POST['down'])) {
+  // récupérer l'id de l'acteur
+  // récupérer l'id du user ($_SESSION)
+  // UPDATE VERS BDD avec opinion = 0
+}
 
-$sql = 'SELECT c.content, c.created_at, a.username FROM comments as c INNER JOIN accounts as a ON c.accounts_id = a.id';
-$req = $bdd->query($sql);
-$req->execute();
-$resultat = $req->fetchAll();
-$totalComments = $req->rowcount();
+if (!empty($_POST['comment'])) {
+    if (empty($_POST['comments']))  {
+        $msgError['content'] = "Vous avez oublie de rentrer votre commentaire";
+        $error++;
+    } elseif (strlen($_POST['comments']) > 45) {
+        $msgError['content'] = "Le commentaire est trop long (45 caractères max)";
+        $error++;
+    }
+
+    if ($error === 0) {
+        $date = new Datetime();
+        $dateaenvoyer = $date->format('y-m-d H:i:s');
+
+        insertComment($dateaenvoyer, $_POST['comments'], $_SESSION['auth']['id'], $actor["id"]);
+
+
+
+        $_SESSION['msg'] = "Votre commentaire a bien été ajouté";
+    }
+}
+
+$resultat = getResultat();
+$totalComments = getTotalComments();
+
+
+
+
 /*
 $sql2 = 'SELECT id FROM comments';
 $req2 = $bdd->query($sql);
@@ -75,6 +92,7 @@ die();*/
 <head>
 	<meta charset="utf-8">
 	<title>Formation & co</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="stylesheet" type="text/css" href="css/tablett.css" media="screen and (min-width: 425px)">
 	<link rel="stylesheet" type="text/css" href="css/desktop.css" media="screen and (min-width: 769px)">
@@ -153,11 +171,27 @@ NE PAS OUBLIER DE METTRE UN session_start() en début de fichier index.php
 
 	<section id="commentaires">
 <!--  comme dans register.php : utiliser la span pour afficher message d'erreur si le champ est vide -->
+<div class="content-buttons">
+  <!-- ajouter un if -->
+  <form method="post">
+    <button><i class="far fa-thumbs-up"></i></button>
+    <input type="hidden" name="up" value="upvote">
+  </form>
+  <form method="post">
+    <button><i class="far fa-thumbs-down"></i></button>
+    <input type="hidden" name="down" value="downvote">
+  </form>
+  <!-- ajouter un else -->
+  <p>Vous avez déjà voté</p>
+  <!-- endif -->
+</div>
+    <p><?= $totalComments  ?> commentaires</p>
 		<form method="post">
 
 			<p>
-        <label for="comments">COMMENTAIRE : </label>
-        <input type="textarea" name="comments" id="comments" value="<?= !empty($_POST['comments']) ? $_POST['comments'] : '' ?>"/>
+        <label for="comments">Nouveau commentaire : </label>
+
+        <input type="input" name="comments" id="comments" value="<?= (!empty($_POST['comments']) AND !empty($msgError['content'])) ? $_POST['comments'] : '' ?>"/>
         <span class="<?= !empty($msgError['content']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['content']) ? $msgError['content'] : '' ?></span>
       </p>
 			<p><input type="submit" name="comment" value="Publier"/></p>
@@ -165,22 +199,10 @@ NE PAS OUBLIER DE METTRE UN session_start() en début de fichier index.php
     </form>
 
 
-<p><?= $totalComments  ?> commentaires</p>
-
-
 	</section>
 
  <div class="content-comments">
-   <div class="content-buttons">
-     <form method="post">
-       <button><i class="far fa-thumbs-up"></i></button>
-       <input type="hidden" name="up" value="upvote">
-     </form>
-     <form method="post">
-       <button><i class="far fa-thumbs-down"></i></button>
-       <input type="hidden" name="down" value="downvote">
-     </form>
-   </div>
+
    <div class="">
     <?php foreach ($resultat as $value): ?>
       <div class="comment">

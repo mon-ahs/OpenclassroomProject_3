@@ -73,6 +73,7 @@ if (!empty($_POST['response']) and ($_POST['matchingUsername'] == true)) {
 
               //sleep(5);
 
+            
               header('Location: index.php');
 
     } else {

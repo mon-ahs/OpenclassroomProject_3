@@ -97,14 +97,11 @@ if (!empty($_POST['connection'])) {
   </head>
   <body>
 
-    <?php if (isset($_SESSION['msg'])) : ?>
+        <?php if (isset($_SESSION['msg'])) : ?>
 
-      <p><?= $_SESSION['msg']; ?></p>
+          <p><?= $_SESSION['msg']; unset($_SESSION['msg']); ?></p>
 
-    <?php
-    unset($_SESSION['msg']);
-    endif; 
-    ?>
+        <?php endif; ?>
 
     <!-- SECTION HEADER -->
     <header>

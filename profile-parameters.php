@@ -30,34 +30,37 @@ $resultat = $req->fetch();
 
 if (!empty($_POST['update'])) {
 
-
+// ajouter le check de chque champs (comme register)
 //update request :
 
-$username = $_POST["username"];
-$password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-$firstname = $_POST["firstname"];
-$lastname = $_POST["lastname"];
-$answer = $_POST["answer"];
-$question = $_POST["question"];
 
- $req = $bdd->prepare('UPDATE accounts SET username = :username , password = :password , firstname = :firstname , lastname = :lastname  , answer = :answer , question = :question  WHERE id = :id');
-$req->execute(array(
+    $username = $_POST["username"];
+    $firstname = $_POST["firstname"];
+    $lastname = $_POST["lastname"];
+    $answer = $_POST["answer"];
+    $question = $_POST["question"];
 
-       'username' => $username,
+    $sql = 'UPDATE accounts SET username = :username, firstname = :firstname, lastname = :lastname, answer = :answer, question = :question';
+    $parameters = array(
+           'username' => $username,
+           'firstname' => $firstname,
+           'lastname' => $lastname,
+           'answer'=> $answer,
+           'question' => $question,
+           'id'  => $id
+    );
 
-       'password' => $password,
+    if (!empty($_POST['password'])) {
+        $sql.= ', password = :password';
+        $parameters['password'] = password_hash($_POST['password'], PASSWORD_BCRYPT);
+    }
 
-       'firstname' => $firstname,
+    $sql.= ' WHERE id = :id';
+print_r($sql);
+    $req = $bdd->prepare($sql);
+    $req->execute($parameters);
 
-       'lastname' => $lastname,
 
-       'answer'=> $answer,
-
-       'question' => $question,
-
-       'id'  => $id
-
-     ));
 
 
     $_SESSION['msg'] = "Votre compte a bien été mis a jour";
@@ -134,7 +137,7 @@ $req->execute(array(
 
         <p>
            <label for="password">MOT DE PASSE: </label>
-           <input type="password" name="password" id="password"  value="<?= !empty($_POST['password']) ? $_POST['password'] : $resultat['password'] ?>"/>
+           <input type="password" name="password" id="password" />
            <span class="<?= !empty($msgError['password']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['password']) ? $msgError['password'] : '' ?></span>
         </p>
 

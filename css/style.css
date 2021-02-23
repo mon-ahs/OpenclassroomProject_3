@@ -85,8 +85,8 @@ button {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5%;
-  margin-left: 15%;
+  padding: 20%;
+  margin-left:15%;
   font-size: 1.3rem;
 }
 

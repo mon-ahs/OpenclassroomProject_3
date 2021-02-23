@@ -185,6 +185,10 @@ if (!empty($_POST['register'])) {
 
       </form>
 
+
+
+
+
       <!-- SECTION FOOTER -->
     	<footer id="footer">
     		<p class="copyright">Mentions légales Contact</p>
