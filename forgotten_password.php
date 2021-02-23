@@ -44,6 +44,7 @@ if (!empty($_POST['forgottenPwd'])) {
         {
           $_SESSION['msg'] = 'Veuillez repondre à votre question secrete';
           $_SESSION['auth']['id'] = $resultat['id'];
+          $_SESSION['db']['answer'] = $resultat['answer'];
 
         } else {
                 $_SESSION['msg'] = 'Veuillez rentrer un pseudo existant';
@@ -54,8 +55,8 @@ if (!empty($_POST['forgottenPwd'])) {
 
     }
 
-if (!empty($_POST['response']) and ($_POST['matchingUsername'] == true)) {
-    if ($_POST['db_answer'] == $_POST['answer']) {
+if (!empty($_POST['response'])) {
+    if ($_SESSION['db']['answer'] == $_POST['answer']) {
 
           //requete pour update MDP avec fonction de chiffrage
 
@@ -71,10 +72,7 @@ if (!empty($_POST['response']) and ($_POST['matchingUsername'] == true)) {
 
                $_SESSION['msg'] = "Votre mot de passe a bien été mis a jour";
 
-              //sleep(5);
 
-            
-              header('Location: index.php');
 
     } else {
          $_SESSION['msg'] = 'La réponse ne correspond pas, veuillez recommencer';
@@ -153,6 +151,7 @@ if (!empty($_POST['response']) and ($_POST['matchingUsername'] == true)) {
 
       </form>
 
+
   <?php if ($resultat) : ?>
 
 
@@ -173,9 +172,6 @@ if (!empty($_POST['response']) and ($_POST['matchingUsername'] == true)) {
         <input type="password" name="password" id="password"/>
         <span class="<?= !empty($msgError['password']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['password']) ? $msgError['password'] : '' ?></span>
       </p>
-
-      <input id="matchingUsername" name="matchingUsername" hidden value="true">
-      <input id="db_answer" name="db_answer" hidden value="<?=$resultat['answer']?>">
 
       <input type="submit" value="Envoyer" name="response">
 
