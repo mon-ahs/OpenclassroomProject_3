@@ -50,8 +50,25 @@ $msgError = [];
 
 if (!empty($_POST['up'])) {
     // récupérer l'id de l'acteur
+    $idActeur = (int) $_GET['id'];
     // récupérer l'id du user ($_SESSION)
+    $idAccount = $_SESSION['auth']['id'];
     // UPDATE VERS BDD avec opinion = 1
+    $opinion = 1;
+
+   $req = $bdd->prepare('UPDATE votes SET opinion = :opinion WHERE actors_id = :actors_id AND accounts_id = :accounts_id');
+  //   $req = $bdd->prepare('INSERT INTO votes(accounts_id, actors_id, opinion) VALUES(:accounts_id, :actors_id, :opinion)');
+     $req->execute(array(
+
+            'accounts_id'  => $idAccount,
+
+            'actors_id' => $idActeur,
+
+            'opinion' => $opinion
+
+          ));
+
+         $_SESSION['msg'] = "Votre vote positif a ete pris en compte";
 }
 
 if (!empty($_POST['down'])) {
@@ -187,7 +204,9 @@ NE PAS OUBLIER DE METTRE UN session_start() en début de fichier index.php
 	<section id="commentaires">
 <!--  comme dans register.php : utiliser la span pour afficher message d'erreur si le champ est vide -->
 <div class="content-buttons">
+
   <!-- ajouter un if -->
+  <?php if (!empty($votes)) : ?>
   <form method="post">
     <button><i class="far fa-thumbs-up"></i></button>
     <input type="hidden" name="up" value="upvote">
@@ -196,9 +215,14 @@ NE PAS OUBLIER DE METTRE UN session_start() en début de fichier index.php
     <button><i class="far fa-thumbs-down"></i></button>
     <input type="hidden" name="down" value="downvote">
   </form>
-  <!-- ajouter un else -->
+
+<!-- ajouter un else -->
+<?php else : ?>
   <p>Vous avez déjà voté</p>
+
   <!-- endif -->
+  <?php endif; ?>
+  
 </div>
     <p><?= $totalComments  ?> commentaires</p>
 		<form method="post">
