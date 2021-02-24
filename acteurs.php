@@ -49,6 +49,9 @@ $donnees = $reponse->fetchAll();
     <form action="disconnection.php" method="post">
        <p><input type="submit" name="disconnect" value="Deconnexion"/></p>
     </form>
+    <form action="profile-parameters.php" method="post">
+       <p><input type="submit" name="profile" value="Changer mes parametres de profil"/></p>
+    </form>
     <div class="content-header">
       <div>
         <p><img class="img-logo" src="images/GBAF.png" alt="Logo"></p>

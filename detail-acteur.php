@@ -168,6 +168,9 @@ NE PAS OUBLIER DE METTRE UN session_start() en début de fichier index.php
     <form action="disconnection.php" method="post">
        <p><input type="submit" name="disconnect" value="Deconnexion"/></p>
     </form>
+    <form action="profile-parameters.php" method="post">
+       <p><input type="submit" name="profile" value="Changer mes parametres de profil"/></p>
+    </form>
 		<div class="content-header">
 			<div>
 				<p><img class="img-logo" src="images/GBAF.png" alt="Logo"></p>
@@ -222,7 +225,7 @@ NE PAS OUBLIER DE METTRE UN session_start() en début de fichier index.php
 
   <!-- endif -->
   <?php endif; ?>
-  
+
 </div>
     <p><?= $totalComments  ?> commentaires</p>
 		<form method="post">
