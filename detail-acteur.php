@@ -48,6 +48,7 @@ if(isset($_GET['id']))
 $error = 0;
 $msgError = [];
 
+//Quand la personne n'a pas encore voté et qu'elle veut mettre un vote positif
 if (!empty($_POST['up'])) {
     // récupérer l'id de l'acteur
     $idActeur = (int) $_GET['id'];
@@ -56,8 +57,8 @@ if (!empty($_POST['up'])) {
     // UPDATE VERS BDD avec opinion = 1
     $opinion = 1;
 
-   $req = $bdd->prepare('UPDATE votes SET opinion = :opinion WHERE actors_id = :actors_id AND accounts_id = :accounts_id');
-  //   $req = $bdd->prepare('INSERT INTO votes(accounts_id, actors_id, opinion) VALUES(:accounts_id, :actors_id, :opinion)');
+  //$req = $bdd->prepare('UPDATE votes SET opinion = :opinion WHERE actors_id = :actors_id AND accounts_id = :accounts_id');
+     $req = $bdd->prepare('INSERT INTO votes(accounts_id, actors_id, opinion) VALUES(:accounts_id, :actors_id, :opinion)');
      $req->execute(array(
 
             'accounts_id'  => $idAccount,
@@ -71,10 +72,28 @@ if (!empty($_POST['up'])) {
          $_SESSION['msg'] = "Votre vote positif a ete pris en compte";
 }
 
+
+//Quand la personne n'a pas encore voté et qu'elle veut mettre un vote négatif
 if (!empty($_POST['down'])) {
-  // récupérer l'id de l'acteur
-  // récupérer l'id du user ($_SESSION)
-  // UPDATE VERS BDD avec opinion = 0
+    // récupérer l'id de l'acteur
+    $idActeur = (int) $_GET['id'];
+    // récupérer l'id du user ($_SESSION)
+    $idAccount = $_SESSION['auth']['id'];
+    // UPDATE VERS BDD avec opinion = 0
+    $opinion = 0;
+
+    $req = $bdd->prepare('INSERT INTO votes(accounts_id, actors_id, opinion) VALUES(:accounts_id, :actors_id, :opinion)');
+    $req->execute(array(
+
+           'accounts_id'  => $idAccount,
+
+           'actors_id' => $idActeur,
+
+           'opinion' => $opinion
+
+         ));
+
+        $_SESSION['msg'] = "Votre vote negatif a ete pris en compte";
 }
 
 if (!empty($_POST['comment'])) {
@@ -209,7 +228,7 @@ NE PAS OUBLIER DE METTRE UN session_start() en début de fichier index.php
 <div class="content-buttons">
 
   <!-- ajouter un if -->
-  <?php if (!empty($votes)) : ?>
+  <?php if (!$votes) : ?>
   <form method="post">
     <button><i class="far fa-thumbs-up"></i></button>
     <input type="hidden" name="up" value="upvote">
@@ -221,10 +240,10 @@ NE PAS OUBLIER DE METTRE UN session_start() en début de fichier index.php
 
 <!-- ajouter un else -->
 <?php else : ?>
-  <p>Vous avez déjà voté</p>
-
+    <p>Vous avez déjà voté</p>.
+<?php endif; ?>
   <!-- endif -->
-  <?php endif; ?>
+
 
 </div>
     <p><?= $totalComments  ?> commentaires</p>
@@ -260,26 +279,6 @@ NE PAS OUBLIER DE METTRE UN session_start() en début de fichier index.php
    </div>
  </div>
 
-
-<?php
-if (!empty($_POST['comment'])) {
-
-  //quand le bouton PUBLIER est cliqué, affiche ce message :
-  echo '<pre>';
-      print_r('Votre commentaire a été pris en compte');
-      echo '<pre>';
-
-  //affiche tous les paramètres de session, une fois passé par connection_form.php
-      print_r($_SESSION);
-      echo '</pre>';
-
-//permet d'afficher le prénom de l'utilisateur connecté
-      echo '<pre>';
-          print_r('Prénom : ' . $_SESSION['auth']['firstname']);
-
-
-}
- ?>
 
 	<!-- SECTION FOOTER -->
 	<footer id="footer">

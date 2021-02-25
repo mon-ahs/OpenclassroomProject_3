@@ -55,8 +55,25 @@ if (!empty($_POST['forgottenPwd'])) {
 
     }
 
+
 if (!empty($_POST['response'])) {
-    if ($_SESSION['db']['answer'] == $_POST['answer']) {
+
+  if (empty($_POST['answer'])) {
+      $msgError['answer'] = "La réponse est vide";
+      $error++;
+  }
+
+  if (empty($_POST['password'])) {
+      $msgError['password'] = "Le mot de passe est vide";
+      $error++;
+  } elseif (strlen($_POST['password']) > 70) {
+      $msgError['password'] = "Le mot de passe est trop long (70 caractères max)";
+      $error++;
+  }
+
+  if ($error === 0) {
+
+        if ($_SESSION['db']['answer'] == $_POST['answer']) {
 
           //requete pour update MDP avec fonction de chiffrage
 
@@ -71,16 +88,19 @@ if (!empty($_POST['response'])) {
                 ));
 
                $_SESSION['msg'] = "Votre mot de passe a bien été mis a jour";
+               header('Location: index.php');
 
 
 
     } else {
          $_SESSION['msg'] = 'La réponse ne correspond pas, veuillez recommencer';
     }
+
+
+  } else {
+    $_SESSION['msg'] = 'Vous avez oublié de remplir des champs, veuillez entrer votre pseudo à nouveau';
+  }
 }
-
-
-
 
 //if de verification si existe, non null
 //if (
@@ -164,7 +184,7 @@ if (!empty($_POST['response'])) {
       <p>
         <label for="answer">REPONSE </label>
         <input type="text" name="answer" id="answer" value="<?= !empty($_POST['answer']) ? $_POST['answer'] : '' ?>" />
-        <p class="<?= !empty($msgError['answer']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['answer']) ? $msgError['answer'] : '' ?></p>
+        <span class="<?= !empty($msgError['answer']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['answer']) ? $msgError['answer'] : '' ?></span>
       </p>
 
       <p>
