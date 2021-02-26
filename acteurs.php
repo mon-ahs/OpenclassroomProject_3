@@ -1,25 +1,15 @@
 <?php
 session_start();
 
+require 'function.php';
+
 if (!isset($_SESSION['auth']['username'])) {
   header('Location: index.php');
   exit;
 }
 
-try {
-
-    $bdd = new PDO('mysql:host=localhost;dbname=gbaf;charset=utf8', 'root', '');
-}
-
-catch (Exception $e)
-{
-    die('Erreur : ' . $e->getMessage());
-
-}
-
-$reponse = $bdd->query('select * from actors');
-
-$donnees = $reponse->fetchAll();
+//récupère tous les acteurs pour pouvoir les afficher sur la page
+$donnees = getAllActors();
  ?>
 
 <!DOCTYPE html>

@@ -2,21 +2,11 @@
 
 session_start();
 
+require 'function.php';
+
 if (isset($_SESSION['auth']['username'])) {
   header('Location: acteurs.php');
   exit;
-}
-
-
-
-//$_SESSION['username'] = '';
-
-//try accès DB
-try {
-    $bdd = new PDO('mysql:host=localhost;dbname=gbaf', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-}
-catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
 }
 
 $error = 0;
@@ -33,12 +23,8 @@ if (!empty($_POST['forgottenPwd'])) {
     if ($error === 0) {
         $username = htmlspecialchars($_POST['username']);
 
-        $req = $bdd->prepare('SELECT * FROM accounts WHERE username = :username ');
-        $req->execute(array(
-            'username' => $username
-        ));
-
-        $resultat = $req->fetch();
+        //sql requete pour retrouver l'account correspondant au pseudo entré
+        $resultat = getAccount($username);
 
         if ($resultat)
         {
@@ -53,7 +39,7 @@ if (!empty($_POST['forgottenPwd'])) {
             $_SESSION['msg'] = 'Veuillez rentrer un pseudo existant';
     }
 
-    }
+}
 
 
 if (!empty($_POST['response'])) {
@@ -75,27 +61,17 @@ if (!empty($_POST['response'])) {
 
         if ($_SESSION['db']['answer'] == $_POST['answer']) {
 
-          //requete pour update MDP avec fonction de chiffrage
-
+          //requete sql pour update MDP avec fonction de chiffrage
           $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-          $req = $bdd->prepare('UPDATE accounts SET password = :password WHERE id = :id');
-           $req->execute(array(
+          $id = $_SESSION['auth']['id'];
+          updatePassword($password, $id);
 
-                  'password' => $password,
-
-                  'id'  => $_SESSION['auth']['id']
-
-                ));
-
-               $_SESSION['msg'] = "Votre mot de passe a bien été mis a jour";
-               header('Location: index.php');
-
-
+          $_SESSION['msg'] = "Votre mot de passe a bien été mis a jour";
+          header('Location: index.php');
 
     } else {
          $_SESSION['msg'] = 'La réponse ne correspond pas, veuillez recommencer';
     }
-
 
   } else {
     $_SESSION['msg'] = 'Vous avez oublié de remplir des champs, veuillez entrer votre pseudo à nouveau';

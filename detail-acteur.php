@@ -3,18 +3,13 @@ session_start();
 
 require 'function.php';
 
-
 if (!isset($_SESSION['auth']['username'])) {
   header('Location: index.php');
   exit;
 }
 
-
-
  ?>
 
-
-<!-- méthode du cours pour récupérer l'id -->
 
 <?php //ajouter id superieur ou egal a 0
 if(isset($_GET['id']))
@@ -25,20 +20,10 @@ if(isset($_GET['id']))
 
     $idAccount = $_SESSION['auth']['id'];
 
-// * enlever appel bdd qd ds function
-    $bdd = getBdd();
-
 //requete sql pour récupérer le total des votes pour cet utilisateur et concernant cet acteur
-    $req = $bdd->prepare('SELECT * FROM votes WHERE actors_id = :actors_id AND accounts_id = :accounts_id');
-    $req->execute(array(
-        'actors_id' => $idActeur,
-        'accounts_id' => $idAccount
-    ));
-
-    $votes = $req->fetchAll();
+    $votes = getTotalVotes($idActeur, $idAccount);
 
     print_r($votes);
-    // ici requête SELECT * from votes where actorid = $idActeur and accountid = $_SESSION(id)
 
 } else {
     $_SESSION['msg'] = "Partenaire introuvable";
@@ -48,54 +33,33 @@ if(isset($_GET['id']))
 $error = 0;
 $msgError = [];
 
+// récupérer l'id de l'acteur
+$idActeur = (int) $_GET['id'];
+// récupérer l'id du user ($_SESSION)
+$idAccount = $_SESSION['auth']['id'];
+
 //Quand la personne n'a pas encore voté et qu'elle veut mettre un vote positif
 if (!empty($_POST['up'])) {
-    // récupérer l'id de l'acteur
-    $idActeur = (int) $_GET['id'];
-    // récupérer l'id du user ($_SESSION)
-    $idAccount = $_SESSION['auth']['id'];
     // UPDATE VERS BDD avec opinion = 1
     $opinion = 1;
 
-  //$req = $bdd->prepare('UPDATE votes SET opinion = :opinion WHERE actors_id = :actors_id AND accounts_id = :accounts_id');
-     $req = $bdd->prepare('INSERT INTO votes(accounts_id, actors_id, opinion) VALUES(:accounts_id, :actors_id, :opinion)');
-     $req->execute(array(
+    insertVotes($idAccount, $idActeur, $opinion);
 
-            'accounts_id'  => $idAccount,
-
-            'actors_id' => $idActeur,
-
-            'opinion' => $opinion
-
-          ));
-
-         $_SESSION['msg'] = "Votre vote positif a ete pris en compte";
+    $_SESSION['msg'] = "Votre vote positif a ete pris en compte";
 }
 
 
 //Quand la personne n'a pas encore voté et qu'elle veut mettre un vote négatif
 if (!empty($_POST['down'])) {
-    // récupérer l'id de l'acteur
-    $idActeur = (int) $_GET['id'];
-    // récupérer l'id du user ($_SESSION)
-    $idAccount = $_SESSION['auth']['id'];
     // UPDATE VERS BDD avec opinion = 0
     $opinion = 0;
 
-    $req = $bdd->prepare('INSERT INTO votes(accounts_id, actors_id, opinion) VALUES(:accounts_id, :actors_id, :opinion)');
-    $req->execute(array(
+    insertVotes($idAccount, $idActeur, $opinion);
 
-           'accounts_id'  => $idAccount,
-
-           'actors_id' => $idActeur,
-
-           'opinion' => $opinion
-
-         ));
-
-        $_SESSION['msg'] = "Votre vote negatif a ete pris en compte";
+    $_SESSION['msg'] = "Votre vote negatif a ete pris en compte";
 }
 
+//Ajouter un commentaire
 if (!empty($_POST['comment'])) {
     if (empty($_POST['comments']))  {
         $msgError['content'] = "Vous avez oublie de rentrer votre commentaire";
@@ -111,8 +75,6 @@ if (!empty($_POST['comment'])) {
 
         insertComment($dateaenvoyer, $_POST['comments'], $_SESSION['auth']['id'], $actor["id"]);
 
-
-
         $_SESSION['msg'] = "Votre commentaire a bien été ajouté";
     }
 }
@@ -120,21 +82,6 @@ if (!empty($_POST['comment'])) {
 $resultat = getResultat();
 $totalComments = getTotalComments();
 
-
-
-
-/*
-$sql2 = 'SELECT id FROM comments';
-$req2 = $bdd->query($sql);
-$req2->execute();
-$resultat2 = $req2->rowcount();
-
-echo '<pre>';
-print_r($resultat2);
-die();*/
-//echo '<pre>';
-//print_r($resultat);
-//echo '</pre>';
 ?>
 
 <!DOCTYPE html>
@@ -152,28 +99,6 @@ die();*/
 	<script src="https://kit.fontawesome.com/e6af1cc587.js" crossorigin="anonymous"></script>
 </head>
 
-<!--
-
-REGISTER :
-$_POST
-RECUPERE LES VALEURs $_POST
-REGARDE SI LA VARIABLE N'EST PAS VIDE (pour chaque champ)
-REGARDE SI LA LONGUEUR EST INFERIEUR A LA LONGUEUR DE LA COLONNE EN BDD (pour chaque champ)
-HASHER LE PASSWORD (password_hash : bcrypt)
-INSCRIRE LA PERSONNE EN BDD
-
-CONNECTION :
-$_POST
-RECUPERE LES VALEURs $_POST
-REGARDE SI LA VARIABLE N'EST PAS VIDE (pour chaque champ)
-TU VA RECUPERER L'ENTREE DE LA BASE DE DONNEES QUI A POUR VALEUR (PSEUDO) CELLE DU FORMULAIRE
-SI LE PSEUDO EXISTE ON CONTINUE SINON ARRETE
-UTILISER password_verify pour CHECKER SI LE PASSWORD DU FORMULAIRE CORRESPOND A CELUI DE LA BASE DE DONNEES
-SI C'EST BON ON LOG LA PERSONNE EN UTILISANT $_SESSION
-IL FAUT ENREGISTRER LES DONNEES DE LA PERSONNE A CONNECTER DANS $_SESSION (toutes sauf le mot de passe)
-NE PAS OUBLIER DE METTRE UN session_start() en début de fichier index.php
-
--->
 
 <body>
   <?php if (isset($_SESSION['msg'])) : ?>
@@ -224,8 +149,7 @@ NE PAS OUBLIER DE METTRE UN session_start() en début de fichier index.php
 	</section>
 
 	<section id="commentaires">
-<!--  comme dans register.php : utiliser la span pour afficher message d'erreur si le champ est vide -->
-<div class="content-buttons">
+    <div class="content-buttons">
 
   <!-- ajouter un if -->
   <?php if (!$votes) : ?>
@@ -245,7 +169,7 @@ NE PAS OUBLIER DE METTRE UN session_start() en début de fichier index.php
   <!-- endif -->
 
 
-</div>
+    </div>
     <p><?= $totalComments  ?> commentaires</p>
 		<form method="post">
 

@@ -2,21 +2,13 @@
 
 session_start();
 
+require 'function.php';
+
 if (isset($_SESSION['auth']['username'])) {
   header('Location: acteurs.php');
   exit;
 }
 
-
-//$_SESSION['username'] = '';
-
-//try accès DB
-try {
-    $bdd = new PDO('mysql:host=localhost;dbname=gbaf', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-}
-catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
-}
 
 $error = 0;
 $msgError = [];
@@ -35,12 +27,8 @@ if (!empty($_POST['connection'])) {
     if ($error === 0) {
         $username = htmlspecialchars($_POST['username']);
 
-        $req = $bdd->prepare('SELECT * FROM accounts WHERE username = :username ');
-        $req->execute(array(
-            'username' => $username
-        ));
-
-        $resultat = $req->fetch();
+        //requete sql pour récupérer le compte lié au pseudo donné
+        $resultat = getAccount($username);
 
         if ($resultat)
         {
@@ -67,17 +55,6 @@ if (!empty($_POST['connection'])) {
     }
 
 }
-
-
-//if de verification si existe, non null
-//if (
-//((isset($_POST['username'])) AND ($_POST['username'] !=null))
-//AND ((isset($_POST['password'])) AND ($_POST['password'] !=null))
-//)
-
-//cas où les var existent
-//{
-//  $req = $bdd->prepare('SELECT id, password FROM accounts WHERE username = " ' .$_POST['username'] . ' " ');
 
 ?>
 

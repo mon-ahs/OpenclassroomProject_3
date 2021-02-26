@@ -1,21 +1,11 @@
 <?php
 session_start();
 
-//print_r($_POST);
-
+require 'function.php';
 
 if (!isset($_SESSION['auth']['username'])) {
   header('Location: index.php');
   exit;
-}
-
-try {
-    $bdd = new PDO('mysql:host=localhost;dbname=gbaf;charset=utf8', 'root', '');
-}
-
-catch (Exception $e)
-{
-    die('Erreur : ' . $e->getMessage());
 }
 
 
@@ -23,14 +13,7 @@ catch (Exception $e)
 $id = $_SESSION['auth']['id'];
 
 //select request to display fields in form
-//// TODO: transférer dans function.php
-
-$req = $bdd->prepare('SELECT * FROM accounts WHERE id = :id ');
-$req->execute(array(
-    'id' => $id
-));
-
-$resultat = $req->fetch();
+$resultat = selectAccountsWithId($id);
 
 
 
@@ -40,93 +23,81 @@ $msgError = [];
 
 if (!empty($_POST['update'])) {
 
-// ajouter le check de chque champs (comme register)
-//update request :
+$firstname = htmlspecialchars($_POST['firstname']);
+$lastname = htmlspecialchars($_POST['lastname']);
+$username = htmlspecialchars($_POST['username']);
+$password = htmlspecialchars($_POST['password']);
+$question = htmlspecialchars($_POST['question']);
+$answer = htmlspecialchars($_POST['answer']);
 
-    if (empty($_POST['firstname']))
+    if (empty($firstname))
     {
         $msgError['firstname'] = "Le prénom est vide";
         $error++;
     }
-    elseif (strlen($_POST['firstname']) > 45)
+    elseif (strlen($firstname) > 45)
     {
         $msgError['firstname'] = "Le prénom est trop long (45 caractères max)";
         $error++;
     }
 
-    if (empty($_POST['lastname']))
+    if (empty($lastname))
     {
         $msgError['lastname'] = "Le nom est vide";
         $error++;
-    } elseif (strlen($_POST['lastname']) > 45)
+    } elseif (strlen($lastname) > 45)
     {
         $msgError['lastname'] = "Le nom est trop long (45 caractères max)";
         $error++;
     }
 
-    if (empty($_POST['username']))
+    if (empty($username))
     {
         $msgError['username'] = "Le pseudo est vide";
         $error++;
-    } elseif (strlen($_POST['username']) > 45)
+    } elseif (strlen($username) > 45)
     {
         $msgError['username'] = "Le pseudo est trop long (45 caractères max)";
         $error++;
     }
 
-    if (empty($_POST['password']))
+    if (empty($password))
     {
         $msgError['password'] = "Le mot de passe est vide";
         $error++;
-    } elseif (strlen($_POST['password']) > 70)
+    } elseif (strlen($password) > 70)
     {
         $msgError['password'] = "Le mot de passe est trop long (70 caractères max)";
         $error++;
     }
 
-    if (empty($_POST['question']))
+    if (empty($question))
     {
         $msgError['question'] = "Le question est vide";
         $error++;
-    } elseif (strlen($_POST['question']) > 255)
+    } elseif (strlen($question) > 255)
     {
         $msgError['question'] = "Le question est trop longue (255 caractères max)";
         $error++;
     }
 
-    if (empty($_POST['answer']))
+    if (empty($answer))
     {
         $msgError['answer'] = "Le reponse est vide";
         $error++;
     }
-    elseif (strlen($_POST['answer']) > 255)
+    elseif (strlen($answer) > 255)
     {
         $msgError['answer'] = "Le reponse est trop longue (255 caractères max)";
         $error++;
     }
 
     if ($error === 0) {
-    $sql = 'UPDATE accounts SET username = :username, firstname = :firstname, lastname = :lastname, answer = :answer, question = :question';
-    $parameters = array(
-           'username' => $_POST["username"],
-           'firstname' => $_POST["firstname"],
-           'lastname' => $_POST["lastname"],
-           'answer'=> $_POST["answer"],
-           'question' => $_POST["question"],
-           'id'  => $id
-    );
 
-        if (!empty($_POST['password'])) {
-            $sql.= ', password = :password';
-            $parameters['password'] = password_hash($_POST['password'], PASSWORD_BCRYPT);
-        }
+      //requete sql pour changer les paramètres de l'utilisateur en DB
+      updateProfile($username, $firstname, $lastname, $answer, $question, $password, $id);
 
-    $sql.= ' WHERE id = :id';
-    print_r($sql);
-    $req = $bdd->prepare($sql);
-    $req->execute($parameters);
-
-    $_SESSION['msg'] = "Votre compte a bien été mis a jour";
+      $_SESSION['msg'] = "Votre compte a bien été mis a jour";
 
     }
 }
