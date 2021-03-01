@@ -11,6 +11,7 @@ if (!isset($_SESSION['auth']['username'])) {
 //récupère tous les acteurs pour pouvoir les afficher sur la page
 $donnees = getAllActors();
  ?>
+ 
 
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">

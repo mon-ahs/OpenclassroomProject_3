@@ -23,7 +23,6 @@ if(isset($_GET['id']))
 //requete sql pour récupérer le total des votes pour cet utilisateur et concernant cet acteur
     $votes = getTotalVotes($idActeur, $idAccount);
 
-    print_r($votes);
 
 } else {
     $_SESSION['msg'] = "Partenaire introuvable";
@@ -41,11 +40,20 @@ $idAccount = $_SESSION['auth']['id'];
 //Quand la personne n'a pas encore voté et qu'elle veut mettre un vote positif
 if (!empty($_POST['up'])) {
     // UPDATE VERS BDD avec opinion = 1
-    $opinion = 1;
+      $opinion = 1;
+    try {
+      insertVotes($idAccount, $idActeur, $opinion);
 
-    insertVotes($idAccount, $idActeur, $opinion);
+      $_SESSION['msg'] = "Votre vote positif a ete pris en compte";
+    }
 
-    $_SESSION['msg'] = "Votre vote positif a ete pris en compte";
+    catch (Exception $e)
+    {
+
+            $_SESSION['msg'] = "Vous avez deja vote";
+    }
+
+
 }
 
 
@@ -53,10 +61,17 @@ if (!empty($_POST['up'])) {
 if (!empty($_POST['down'])) {
     // UPDATE VERS BDD avec opinion = 0
     $opinion = 0;
+    try {
+      insertVotes($idAccount, $idActeur, $opinion);
 
-    insertVotes($idAccount, $idActeur, $opinion);
+      $_SESSION['msg'] = "Votre vote negatif a ete pris en compte";
+    }
 
-    $_SESSION['msg'] = "Votre vote negatif a ete pris en compte";
+    catch (Exception $e)
+    {
+
+            $_SESSION['msg'] = "Vous avez deja vote";
+    }
 }
 
 //Ajouter un commentaire

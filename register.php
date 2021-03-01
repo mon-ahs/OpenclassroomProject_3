@@ -14,12 +14,12 @@ $msgError = [];
 
 if (!empty($_POST['register'])) {
 
-  $firstname = $_POST['firstname'];
-  $lastname = $_POST['lastname'];
-  $username = $_POST['username'];
-  $password = $_POST['password'];
-  $question = $_POST['question'];
-  $answer = $_POST['answer'];
+  $firstname = htmlspecialchars( $_POST['firstname']);
+  $lastname = htmlspecialchars( $_POST['lastname']);
+  $username = htmlspecialchars($_POST['username']);
+  $password = htmlspecialchars($_POST['password']);
+  $question = htmlspecialchars($_POST['question']);
+  $answer = htmlspecialchars($_POST['answer']);
 
     if (empty($firstname)) {
         $msgError['firstname'] = "Le prénom est vide";
@@ -68,13 +68,20 @@ if (!empty($_POST['register'])) {
         $error++;
     }
 
-
+    //insert pour enregistrer le nouvel utilisateur en DB
     if ($error === 0) {
+      try {
+        register($username, $password, $firstname, $lastname, $answer, $question);
 
-      //insert pour enregistrer le nouvel utilisateur en DB
-      register($username, $password, $firstname, $lastname, $answer, $question);
+        $_SESSION['msg'] = "Votre compte a bien été créé";
+      }
 
-      $_SESSION['msg'] = "Votre compte a bien été créé";
+      catch (Exception $e)
+      {
+
+              $_SESSION['msg'] = "Vous avez deja un compte";
+      }
+
     }
 
 }
@@ -119,7 +126,7 @@ if (!empty($_POST['register'])) {
     </section>
     </header>
 
-    <h1>INSCRIPTION SUR LE SITE GBAF: </h1>
+    <h1>CREATION DE MON COMPTE SUR LE SITE GBAF: </h1>
 
 <!-- formulaire  d'inscription -->
     <form method="post">

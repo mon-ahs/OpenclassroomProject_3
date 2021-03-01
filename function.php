@@ -130,13 +130,11 @@ function updateProfile($username, $firstname, $lastname, $answer, $question, $pa
          'lastname' => $lastname,
          'answer'=> $answer,
          'question' => $question,
-         'id'  => $id
+         'id'  => $id,
+         'password' =>  password_hash($password, PASSWORD_BCRYPT)
   );
 
-      if (!empty($password)) {
-          $sql.= ', password = :password';
-          $parameters['password'] = password_hash($password, PASSWORD_BCRYPT);
-      }
+    
 
   $sql.= ' WHERE id = :id';
   $req = $bdd->prepare($sql);

@@ -26,7 +26,7 @@ if (!empty($_POST['connection'])) {
 
     if ($error === 0) {
         $username = htmlspecialchars($_POST['username']);
-
+        $password = htmlspecialchars($_POST['password']);
         //requete sql pour récupérer le compte lié au pseudo donné
         $resultat = getAccount($username);
 
@@ -101,21 +101,23 @@ if (!empty($_POST['connection'])) {
 
         <p>
           <label for="username">PSEUDO: </label>
-          <input type="text" name="username" id="username" value="<?= !empty($_POST['username']) ? $_POST['username'] : '' ?>" />
+          <input class="username" type="text" name="username" id="username" value="<?= !empty($_POST['username']) ? $_POST['username'] : '' ?>" />
           <p class="<?= !empty($msgError['username']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['username']) ? $msgError['username'] : '' ?></p>
         </p>
 
         <p>
           <label for="password">MOT DE PASSE: </label>
-          <input type="password" name="password" id="password"/>
+          <input class="password" type="password" name="password" id="password" />
           <p class="<?= !empty($msgError['password']) ? 'dblock' : 'dnone' ?>"><?= !empty($msgError['password']) ? $msgError['password'] : '' ?></p>
         </p>
 
         <input type="submit" value="Se connecter" name="connection">
 
-      </form>
 
-      <a href="forgotten_password.php">Mot de passe oublie</a>
+      </form>
+      <br />
+      <a href="forgotten_password.php">Mot de passe oublie</a><br />
+      <a href="register.php">Pas encore inscrit ? Créez votre compte </a>
 
 
     <!-- SECTION FOOTER -->
