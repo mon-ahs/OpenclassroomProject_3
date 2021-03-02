@@ -19,6 +19,15 @@ h2 {
   text-align: left;
 }
 
+.username {
+  width: 500px;
+}
+
+.password {
+    width: 450px;
+}
+
+
 .img-user {
   height: 10%;
   display: flex;
@@ -54,7 +63,6 @@ a:hover {
 
 .content-user {
   display: flex;
-  /* align-items: center; */
   justify-content: flex-end;
   padding-bottom: 20%;
 }
@@ -65,6 +73,7 @@ a:hover {
   align-items: center;
   padding: 5%;
 }
+
 
 .comment {
   text-align: left;

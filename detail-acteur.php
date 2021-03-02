@@ -185,6 +185,7 @@ $totalComments = getTotalComments();
 
 
     </div>
+
     <p><?= $totalComments  ?> commentaires</p>
 		<form method="post">
 
@@ -197,7 +198,6 @@ $totalComments = getTotalComments();
 			<p><input type="submit" name="comment" value="Publier"/></p>
 
     </form>
-
 
 	</section>
 

@@ -123,7 +123,7 @@ function selectAccountsWithId($id){
 
 function updateProfile($username, $firstname, $lastname, $answer, $question, $password, $id){
   $bdd = getBdd();
-  $sql = 'UPDATE accounts SET username = :username, firstname = :firstname, lastname = :lastname, answer = :answer, question = :question';
+  $sql = 'UPDATE accounts SET username = :username, firstname = :firstname, lastname = :lastname, answer = :answer, question = :question, password = :password';
   $parameters = array(
          'username' => $username,
          'firstname' => $firstname,
@@ -134,7 +134,7 @@ function updateProfile($username, $firstname, $lastname, $answer, $question, $pa
          'password' =>  password_hash($password, PASSWORD_BCRYPT)
   );
 
-    
+
 
   $sql.= ' WHERE id = :id';
   $req = $bdd->prepare($sql);
